@@ -1,10 +1,7 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
-import inbox from './components/inbox.vue'
-import discord from './components/discord.vue'
+import Dashboard from './components/Dashboard.vue'
 </script>
 
 <template>
-  <discord/>
+  <Dashboard/>
 </template>
