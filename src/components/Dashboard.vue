@@ -1,68 +1,56 @@
 <template>
-  <v-app id="inspire">
-    <v-system-bar>
+  <v-navigation-drawer>
+    <v-card variant="text" v-bind:title="systemInfo.name" v-bind:subtitle="systemInfo.version"></v-card>
+
+    <v-list>
+      <v-list-item v-bind:prepend-avatar="userInfo.avatar" v-bind:subtitle="userInfo.email" v-bind:title="userInfo.name"></v-list-item>
+    </v-list>
+    <router-link to="/index">TEST</router-link>
+    <v-divider></v-divider>
+
+    <v-list density="compact" nav>
+      <v-list-item v-for="(item, i) in items" :key="i" :value="item" v-bind:prepend-icon="item.icon" v-bind:title="item.text" color="primary"></v-list-item>
+    </v-list>
+  </v-navigation-drawer>
+
+  <v-app-bar>
+    <v-container fluid class="mx-auto align-center d-flex">
+      <v-responsive max-width="260">
+        <v-text-field append-inner-icon="mdi-magnify" density="compact" label="Search templates" variant="outlined" hide-details single-line></v-text-field>
+      </v-responsive>
+
       <v-spacer></v-spacer>
 
-      <v-icon>mdi-square</v-icon>
+      <v-btn icon>
+        <v-icon>mdi-magnify</v-icon>
+      </v-btn>
 
-      <v-icon>mdi-circle</v-icon>
+      <v-btn icon>
+        <v-icon>mdi-heart</v-icon>
+      </v-btn>
 
-      <v-icon>mdi-triangle</v-icon>
-    </v-system-bar>
+      <v-btn icon>
+        <v-avatar color="brown">
+          <span class="text-h5">CJ</span>
+        </v-avatar>
+      </v-btn>
+    </v-container>
 
-    <v-navigation-drawer>
-      <v-card variant="text" v-bind:title="systemInfo.name" v-bind:subtitle="systemInfo.version"></v-card>
+  </v-app-bar>
 
-      <v-list>
-        <v-list-item v-bind:prepend-avatar="userInfo.avatar" v-bind:subtitle="userInfo.email" v-bind:title="userInfo.name"></v-list-item>
-      </v-list>
+  <v-main>
+    <v-container class="py-8 px-6" fluid>
+      <v-row>
+        <v-col cols="12" sm="3" v-for="(item, i) in statCards" :key="i" :value="item">
+          <v-alert border="start" close-label="Close Alert" color="orange-accent-4" v-bind:title="item.target" variant="tonal">
+            {{ item.description }}
+          </v-alert>
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-main>
 
-      <v-divider></v-divider>
-
-      <v-list density="compact" nav>
-        <v-list-item v-for="(item, i) in items" :key="i" :value="item" v-bind:prepend-icon="item.icon" v-bind:title="item.text" color="primary"></v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-
-    <v-app-bar>
-      <v-container fluid class="mx-auto align-center d-flex">
-        <v-responsive max-width="260">
-          <v-text-field append-inner-icon="mdi-magnify" density="compact" label="Search templates" variant="outlined" hide-details single-line></v-text-field>
-        </v-responsive>
-
-        <v-spacer></v-spacer>
-
-        <v-btn icon>
-          <v-icon>mdi-magnify</v-icon>
-        </v-btn>
-
-        <v-btn icon>
-          <v-icon>mdi-heart</v-icon>
-        </v-btn>
-
-        <v-btn icon>
-          <v-avatar color="brown">
-            <span class="text-h5">CJ</span>
-          </v-avatar>
-        </v-btn>
-      </v-container>
-
-    </v-app-bar>
-
-    <v-main>
-      <v-container class="py-8 px-6" fluid>
-        <v-row>
-          <v-col cols="12" sm="3" v-for="(item, i) in statCards" :key="i" :value="item">
-            <v-alert border="start" close-label="Close Alert" color="orange-accent-4" v-bind:title="item.target" variant="tonal">
-              {{ item.description }}
-            </v-alert>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-main>
-
-    <v-footer app>{{ new Date().getFullYear() }} — <strong>Vuetify</strong></v-footer>
-  </v-app>
+  <v-footer app>{{ new Date().getFullYear() }} — <strong>Vuetify</strong></v-footer>
 </template>
 
 <script setup>
