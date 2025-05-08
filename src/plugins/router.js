@@ -4,26 +4,7 @@ import {createRouter, createWebHistory} from 'vue-router'
 export function installRouter(app) {
     const routes = [
         {
-            path: "/",
-            redirect: "/",
-            component: () => import('@/layouts/inbox.vue'),
-            meta: {
-                title: 'Home'
-            },
-            children: [
-                {
-                    path: "/",
-                    name: "Home",
-                    component: () => import('@/components/v-main/dashboard.vue'),
-                    meta: {
-                        title: 'Dashboard'
-                    }
-                }
-            ]
-        },
-        {
             path: '/404',
-            name: "NotFound",
             component: () => import('@/layouts/not-found.vue'),
             meta: {
                 title: 'NotFound'
@@ -35,9 +16,47 @@ export function installRouter(app) {
         }
     ]
 
+    const routeArray = [
+        {
+            path: "/",
+            component: () => import('@/layouts/inbox.vue'),
+            meta: {
+                title: 'Home'
+            },
+            children: [
+                {
+                    path: "/",
+                    component: () => import('@/components/v-main/dashboard.vue'),
+                    meta: {
+                        title: 'Dashboard'
+                    }
+                }
+            ]
+        },
+        {
+            path: "/list",
+            component: () => import('@/layouts/extended-toolbar.vue'),
+            meta: {
+                title: 'List'
+            },
+            children: [
+                {
+                    path: "/list",
+                    component: () => import('@/components/v-main/dashboard.vue'),
+                    meta: {
+                        title: 'List'
+                    }
+                }
+            ]
+        }
+    ]
+    routeArray.forEach(route => {
+        routes.push(route)
+    })
+
     const router = createRouter({
         history: createWebHistory(),
-        routes,
+        routes: routes
     })
 
     app.use(router)
