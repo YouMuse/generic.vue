@@ -25,7 +25,7 @@ const menuInfo = [
 </script>
 
 <template>
-  <v-navigation-drawer>
+  <v-navigation-drawer permanent>
     <v-card variant="text" v-bind:title="systemInfo.name" v-bind:subtitle="systemInfo.version"></v-card>
 
     <v-list>
