@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
+  "description": "A Vue.js project",
+  "author": "YouMuse",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
