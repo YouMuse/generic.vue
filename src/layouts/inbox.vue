@@ -1,18 +1,18 @@
 <script setup>
-import LeftMenu from '@/components/v-navigation-drawer/left-menu.vue'
-import SearchAppBar from '@/components/v-app-bar/search-app-bar.vue'
-import OneLine from '@/components/v-footer/one-line.vue'
+import leftMenu from '@/components/v-navigation-drawer/left-menu.vue'
+import searchAppBar from '@/components/v-app-bar/search-app-bar.vue'
+import oneLine from '@/components/v-footer/one-line.vue'
 </script>
 
 <template>
   <v-app>
-    <LeftMenu/>
+    <leftMenu/>
 
-    <SearchAppBar/>
+    <searchAppBar/>
 
     <router-view/>
 
-    <OneLine/>
+    <oneLine/>
   </v-app>
 </template>
 
