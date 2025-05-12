@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {authorizationStore} from '@/store/authorization.js'
 
 const instance = axios.create({
     baseURL: 'https://jsonplaceholder.typicode.com/',
@@ -7,7 +8,10 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
     config => {
-        config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`
+        const authorizationInfo = authorizationStore()
+
+        config.headers.Authorization = 'Bearer ' + authorizationInfo.authorization.token
+
         return config
     },
     error => {
@@ -17,7 +21,7 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(
     response => {
-        return response.data;
+        return response;
     },
     error => {
         if (error.response && error.response.status === 401) {

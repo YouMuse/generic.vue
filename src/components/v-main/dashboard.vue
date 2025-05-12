@@ -1,7 +1,6 @@
 <script setup>
-import {getPost} from '@/api/system-service.js'
+import {getPost} from '@/api/systemInfo.js'
 import {ref, onMounted} from 'vue'
-import {useCounterStore} from '@/store/userInfo.js'
 
 const statCards = [
   {
@@ -34,14 +33,11 @@ const dataList = ref([])
 
 const fetchData = async () => {
   try {
-    dataList.value = await getPost();
+    dataList.value = (await getPost()).data;
   } catch (error) {
     console.error(error);
   }
 }
-
-const store = useCounterStore()
-console.log(store)
 
 onMounted(() => {
   fetchData()
@@ -55,7 +51,6 @@ onMounted(() => {
         <v-col cols="12" sm="3" v-for="(item, i) in statCards" :key="i" :value="item">
           <v-alert border="start" close-label="Close Alert" color="orange-accent-4" v-bind:title="item.target" variant="tonal">
             {{ item.description }}
-            {{ store}}
           </v-alert>
         </v-col>
       </v-row>
