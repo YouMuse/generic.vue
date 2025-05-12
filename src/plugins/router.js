@@ -26,7 +26,7 @@ export function installRouter(app) {
             children: [
                 {
                     path: "/",
-                    component: () => import('@/components/v-main/dashboard.vue'),
+                    component: () => import('@/views/dashboard.vue'),
                     meta: {
                         title: 'Dashboard'
                     }
@@ -42,7 +42,7 @@ export function installRouter(app) {
             children: [
                 {
                     path: "/list",
-                    component: () => import('@/components/v-main/dashboard.vue'),
+                    component: () => import('@/views/dashboard.vue'),
                     meta: {
                         title: 'List'
                     }

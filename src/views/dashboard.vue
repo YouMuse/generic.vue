@@ -1,5 +1,5 @@
 <script setup>
-import {getPost} from '@/api/systemInfo.js'
+import {getPost} from '@/services/systemInfoService.js'
 import {ref, onMounted} from 'vue'
 
 const statCards = [

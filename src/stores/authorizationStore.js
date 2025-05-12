@@ -1,6 +1,6 @@
 import {defineStore} from 'pinia'
 import {computed, reactive} from 'vue'
-import {loginApi} from '@/api/authorization.js'
+import {login} from '@/services/authorizationService.js'
 
 export const authorizationStore = defineStore(
     'authorization',
@@ -14,9 +14,14 @@ export const authorizationStore = defineStore(
             return authorization.token !== ''
         })
 
-        async function login(username, password) {
+        async function loginWithEmailAndPassword(email, password) {
             try {
-                const response = await loginApi({username: username, password: password})
+                const data = {
+                    username: email,
+                    password: password
+                }
+
+                const response = await login(data)
 
                 authorization.token = response.data.token
                 authorization.userInfo = response.data.userInfo

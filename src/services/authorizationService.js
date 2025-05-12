@@ -1,5 +1,5 @@
 import instance from '@/plugins/axios.js'
 
-export const loginApi = (data) => {
+export const login = (data) => {
     return instance.post('/api/login', data);
 }
