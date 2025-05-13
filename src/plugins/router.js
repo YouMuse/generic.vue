@@ -48,6 +48,13 @@ export function installRouter(app) {
                     }
                 }
             ]
+        },
+        {
+            path: "/login",
+            component: () => import('@/layouts/sign-in.vue'),
+            meta: {
+                title: 'Login'
+            }
         }
     ]
     routeArray.forEach(route => {
