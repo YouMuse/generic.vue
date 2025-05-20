@@ -1,92 +1,44 @@
 <template>
-  <v-img
-      class="fill-height"
-      src="https://cdn.pixabay.com/photo/2021/10/28/20/49/castle-6750555_1280.jpg"
-      :aspect-ratio="16 / 9"
-      height="100vh"
-      width="100vw"
-      gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
-  >
+  <v-img class="fill-height" src="https://cdn.pixabay.com/photo/2022/10/07/12/48/sea-7504986_1280.jpg" aspect-ratio="16/9" cover>
     <v-container>
-      <v-row justify="center" align="center" class="fill-height">
-        <v-col cols="12" md="8" lg="6" xl="4">
-          <v-card elevation="12" class="py-8">
-            <v-card-text class="text-center">
-              <h2 class="text-h4 black--text font-weight-bold">
-                Sign in to our platform
-              </h2>
-
-              <div class="mt-6">
-                <v-row justify="center">
-                  <v-col cols="12" md="10">
-                    <v-text-field
-                        label="Enter email"
-                        solo
-                        flat
-                        outlined
-                        prepend-inner-icon="mdi-account-outline"
-                        hide-details
-                    ></v-text-field>
-
-                    <v-text-field
-                        label="Password"
-                        solo
-                        flat
-                        outlined
-                        prepend-inner-icon="mdi-lock-open"
-                        hide-details
-                        class="mt-6"
-                    ></v-text-field>
-
-                    <div class="d-flex align-center justify-space-between mt-4">
-                      <v-checkbox label="Remember me"></v-checkbox>
-
-                      <div class="primary--text text-subtitle-1">
-                        Lost password?
-                      </div>
-                    </div>
-
-                    <div class="mt-6">
-                      <v-btn block class="text-capitalize" large color="primary"
-                      >sign in</v-btn
-                      >
-                    </div>
-
-                    <div class="mt-6">
-                      <span class="text-subtitle-1">
-                        or login with
-                      </span>
-
-                      <div class="mt-2">
-                        <v-btn color="light-blue" icon large>
-                          <v-icon large>
-                            mdi-twitter
-                          </v-icon>
-                        </v-btn>
-
-                        <v-btn color="indigo" icon large>
-                          <v-icon large>
-                            mdi-facebook
-                          </v-icon>
-                        </v-btn>
-
-                        <v-btn color="red" icon large>
-                          <v-icon large>
-                            mdi-google
-                          </v-icon>
-                        </v-btn>
-                      </div>
-
-                      <div class="mt-6">
-                        Not registered?
-                        <span class="primary--text text-subtitle-1"
-                        >Create account</span
-                        >
-                      </div>
-                    </div>
-                  </v-col>
-                </v-row>
-              </div>
+      <v-row justify="center">
+        <v-col cols="12" md="6">
+          <v-card elevation="12">
+            <v-img height="200px" src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg" cover></v-img>
+            <v-card-item>
+              <v-card-title class="text-center">
+                <h2 class="text-h4 black--text font-weight-bold">
+                  Sign in to our platform
+                </h2>
+              </v-card-title>
+            </v-card-item>
+            <v-card-text>
+              <v-row justify="center">
+                <v-col cols="12" md="10">
+                  <v-text-field solo flat outlined prepend-inner-icon="mdi-account-outline" hide-details label="Enter email"></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row justify="center">
+                <v-col cols="12" md="10">
+                  <v-text-field solo flat outlined prepend-inner-icon="mdi-lock-open" hide-details class="mt-6" label="Password"></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row justify="center">
+                <v-col cols="12" md="10" class="text-right">
+                  Lost password?
+                </v-col>
+              </v-row>
+              <v-row justify="center">
+                <v-col cols="12" md="10">
+                  <v-btn block class="text-capitalize" large color="primary">sign in</v-btn>
+                </v-col>
+              </v-row>
+              <v-row justify="center">
+                <v-col cols="12" md="10" class="text-center">
+                  Not registered?
+                  <span class="primary--text text-subtitle-1">Create account</span>
+                </v-col>
+              </v-row>
             </v-card-text>
           </v-card>
         </v-col>
@@ -94,3 +46,5 @@
     </v-container>
   </v-img>
 </template>
+<script setup lang="ts">
+</script>
