@@ -16,7 +16,7 @@ const userInfo = {
 const menuInfo = [
   {text: '仪表板', icon: 'mdi-home', link: '/'},
   {text: 'Shared with me', icon: 'mdi-account-multiple', link: '/list'},
-  {text: 'Starred', icon: 'mdi-star', link: '/1'},
+  {text: 'Starred', icon: 'mdi-star', link: '/table'},
   {text: 'Recent', icon: 'mdi-history', link: '/2'},
   {text: 'Offline', icon: 'mdi-check-circle', link: '/3'},
   {text: 'Uploads', icon: 'mdi-upload', link: '/4'},

@@ -55,6 +55,22 @@ export function installRouter(app) {
             meta: {
                 title: 'Login'
             }
+        },
+        {
+            path: "/table",
+            component: () => import('@/layouts/inbox.vue'),
+            meta: {
+                title: 'Table'
+            },
+            children: [
+                {
+                    path: "/table",
+                    component: () => import('@/views/data-display/data-tables.vue'),
+                    meta: {
+                        title: 'Table'
+                    }
+                }
+            ]
         }
     ]
     routeArray.forEach(route => {
@@ -65,6 +81,13 @@ export function installRouter(app) {
         history: createWebHistory(),
         routes: routes
     })
+
+    router.beforeEach((to, from, next) => {
+        if (to.meta.title) {
+            document.title = to.meta.title;
+        }
+        next();
+    });
 
     app.use(router)
 }
