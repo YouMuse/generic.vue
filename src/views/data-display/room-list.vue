@@ -16,7 +16,7 @@ const headers = [
   {title: '会议室名称', key: 'name'},
   {title: '会议室所在位置', key: 'location'},
   {title: '会议室可容纳的人数', key: 'capacity'},
-  {title: '简介', key: 'description', align: 'end'},
+  {title: '简介', key: 'description', align: 'end', sortable: false},
   {title: '会议室状态', key: 'status', align: 'end'},
   {title: '操作', key: 'actions', align: 'end', sortable: false},
 ]
