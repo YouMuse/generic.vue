@@ -11,6 +11,13 @@ export function installRouter(app) {
             }
         },
         {
+            path: "/login",
+            component: () => import('@/layouts/sign-in.vue'),
+            meta: {
+                title: 'Login'
+            }
+        },
+        {
             path: '/:pathMatch(.*)',
             redirect: '/404'
         }
@@ -34,40 +41,65 @@ export function installRouter(app) {
             ]
         },
         {
-            path: "/list",
-            component: () => import('@/layouts/extended-toolbar.vue'),
+            path: "/user",
+            component: () => import('@/layouts/inbox.vue'),
             meta: {
-                title: 'List'
+                title: '用户管理'
             },
             children: [
                 {
-                    path: "/list",
-                    component: () => import('@/views/dashboard.vue'),
+                    path: "/user",
+                    component: () => import('@/views/data-display/user-list.vue'),
                     meta: {
-                        title: 'List'
+                        title: '用户管理'
                     }
                 }
             ]
         },
         {
-            path: "/login",
-            component: () => import('@/layouts/sign-in.vue'),
-            meta: {
-                title: 'Login'
-            }
-        },
-        {
-            path: "/table",
+            path: "/room",
             component: () => import('@/layouts/inbox.vue'),
             meta: {
-                title: 'Table'
+                title: '会议室管理'
+            },
+            children: [
+                {
+                    path: "/room",
+                    component: () => import('@/views/data-display/room-list.vue'),
+                    meta: {
+                        title: '会议室管理'
+                    }
+                }
+            ]
+        },
+        {
+            path: "/facility",
+            component: () => import('@/layouts/inbox.vue'),
+            meta: {
+                title: '设施管理'
             },
             children: [
                 {
                     path: "/table",
-                    component: () => import('@/views/data-display/data-tables.vue'),
+                    component: () => import('@/views/data-display/facility-list.vue'),
                     meta: {
-                        title: 'Table'
+                        title: '设施管理'
+                    }
+                }
+            ]
+        },
+        {
+            path: "/reserve",
+            component: () => import('@/layouts/inbox.vue'),
+            meta: {
+                title: '预约管理'
+            },
+            children: [
+                {
+                    path: "/reserve",
+                    component: () => import('@/views/data-display/reserve-list.vue'),
+                    meta: {
+                        title: '预约管理'
                     }
                 }
             ]

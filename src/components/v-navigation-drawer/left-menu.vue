@@ -15,10 +15,10 @@ const userInfo = {
 
 const menuInfo = [
   {text: '仪表板', icon: 'mdi-home', link: '/'},
-  {text: 'Shared with me', icon: 'mdi-account-multiple', link: '/list'},
-  {text: 'Starred', icon: 'mdi-star', link: '/table'},
-  {text: 'Recent', icon: 'mdi-history', link: '/2'},
-  {text: 'Offline', icon: 'mdi-check-circle', link: '/3'},
+  {text: '用户管理', icon: 'mdi-account-multiple', link: '/user'},
+  {text: '会议室管理', icon: 'mdi-star', link: '/room'},
+  {text: '设施管理', icon: 'mdi-history', link: '/facility'},
+  {text: '预约管理', icon: 'mdi-check-circle', link: '/reserve'},
   {text: 'Uploads', icon: 'mdi-upload', link: '/4'},
   {text: 'Backups', icon: 'mdi-cloud-upload', link: '/5'},
 ]
