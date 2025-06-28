@@ -1,121 +1,159 @@
 <script setup>
+import {onMounted, ref, shallowRef} from 'vue'
+import {useDate} from 'vuetify'
+
+const adapter = useDate()
+
+const DEFAULT_RECORD = {id: '', number: '', name: '', location: '', capacity: 0, description: '', status: ''}
+
+const rooms = ref([])
+const record = ref(DEFAULT_RECORD)
+const dialog = shallowRef(false)
+const isEditing = shallowRef(false)
+
 const headers = [
-  {
-    title: 'Title',
-    key: 'title',
-  },
-  {
-    title: 'Description',
-    key: 'description',
-  },
-  {
-    title: 'Status',
-    key: 'status',
-  },
-  {
-    title: 'Start',
-    key: 'start',
-  },
-  {
-    title: 'End',
-    key: 'end',
-  },
-  {
-    title: '',
-    key: 'actions',
-  },
+  {title: '会议室编号', key: 'number', align: 'start'},
+  {title: '会议室名称', key: 'name'},
+  {title: '会议室所在位置', key: 'location'},
+  {title: '会议室可容纳的人数', key: 'capacity'},
+  {title: '简介', key: 'description', align: 'end'},
+  {title: '会议室状态', key: 'status', align: 'end'},
+  {title: '操作', key: 'actions', align: 'end', sortable: false},
 ]
 
-const items = [
-  {
-    title: '20% off all products',
-    description: 'Get 20% off all products in the store.',
-    status: 'Active',
-    start: '2021-08-01',
-    end: '2021-08-31',
-  },
-  {
-    title: 'Free shipping on orders over $50',
-    description: 'Get free shipping on all orders over $50.',
-    status: 'Active',
-    start: '2021-08-01',
-    end: '2021-08-31',
-  },
-  {
-    title: 'Buy one get one free',
-    description: 'Buy one product and get another one for free.',
-    status: 'Inactive',
-    start: '2021-08-01',
-    end: '2021-08-31',
-  },
-  {
-    title: '10% off all products',
-    description: 'Get 10% off all products in the store.',
-    status: 'Active',
-    start: '2021-08-01',
-    end: '2021-08-31',
-  },
-  {
-    title: 'Buy one get one free',
-    description: 'Buy one product and get another one for free.',
-    status: 'Inactive',
-    start: '2021-08-01',
-    end: '2021-08-31',
-  },
-  {
-    title: '10% off all products',
-    description: 'Get 10% off all products in the store.',
-    status: 'Active',
-    start: '2021-08-01',
-    end: '2021-08-31',
-  },
-]
+onMounted(() => {
+  reset()
+})
+
+function add() {
+  isEditing.value = false
+  record.value = DEFAULT_RECORD
+  dialog.value = true
+}
+
+function edit(id) {
+  isEditing.value = true
+
+  const found = rooms.value.find(room => room.id === id)
+
+  record.value = {id: found.id, number: found.number, name: found.name, location: found.location, capacity: found.capacity, description: found.description, status: found.status}
+
+  dialog.value = true
+}
+
+function remove(id) {
+  const index = rooms.value.findIndex(room => room.id === id)
+  rooms.value.splice(index, 1)
+}
+
+function save() {
+  if (isEditing.value) {
+    const index = rooms.value.findIndex(room => room.id === record.value.id)
+    rooms.value[index] = record.value
+  } else {
+    record.value.id = rooms.value.length + 1
+    rooms.value.push(record.value)
+  }
+
+  dialog.value = false
+}
+
+function reset() {
+  dialog.value = false
+  record.value = DEFAULT_RECORD
+  rooms.value = [
+    {id: 1, number: 'To Kill a Mockingbird', name: 'Harper Lee', location: 'Fiction', capacity: 1960, description: 'Fiction', status: '281'},
+    {id: 2, number: '1984', name: 'George Orwell', location: 'Dystopian', capacity: 1949, description: 'Fiction', status: '281'},
+    {id: 3, number: 'The Great Gatsby', name: 'F. Scott Fitzgerald', location: 'Fiction', capacity: 1925, description: 'Fiction', status: '281'},
+    {id: 4, number: 'Sapiens', name: 'Yuval Noah Harari', location: 'Non-Fiction', capacity: 2011, description: 'Fiction', status: '281'},
+    {id: 5, number: 'Dune', name: 'Frank Herbert', location: 'Sci-Fi', capacity: 1965, description: 'Fiction', status: '281'},
+    {id: 6, number: 'To Kill a Mockingbird', name: 'Harper Lee', location: 'Fiction', capacity: 1960, description: 'Fiction', status: '281'},
+    {id: 7, number: '1984', name: 'George Orwell', location: 'Dystopian', capacity: 1949, description: 'Fiction', status: '281'},
+    {id: 8, number: 'The Great Gatsby', name: 'F. Scott Fitzgerald', location: 'Fiction', capacity: 1925, description: 'Fiction', status: '281'},
+    {id: 9, number: 'Sapiens', name: 'Yuval Noah Harari', location: 'Non-Fiction', capacity: 2011, description: 'Fiction', status: '281'},
+    {id: 10, number: 'Dune', name: 'Frank Herbert', location: 'Sci-Fi', capacity: 1965, description: 'Fiction', status: '281'},
+    {id: 11, number: 'To Kill a Mockingbird', name: 'Harper Lee', location: 'Fiction', capacity: 1960, description: 'Fiction', status: '281'},
+    {id: 12, number: '1984', name: 'George Orwell', location: 'Dystopian', capacity: 1949, description: 'Fiction', status: '281'},
+    {id: 13, number: 'The Great Gatsby', name: 'F. Scott Fitzgerald', location: 'Fiction', capacity: 1925, description: 'Fiction', status: '281'},
+    {id: 14, number: 'Sapiens', name: 'Yuval Noah Harari', location: 'Non-Fiction', capacity: 2011, description: 'Fiction', status: '281'},
+    {id: 15, number: 'Dune', name: 'Frank Herbert', location: 'Sci-Fi', capacity: 1965, description: 'Fiction', status: '281'},
+    {id: 16, number: 'To Kill a Mockingbird', name: 'Harper Lee', location: 'Fiction', capacity: 1960, description: 'Fiction', status: '281'},
+    {id: 17, number: '1984', name: 'George Orwell', location: 'Dystopian', capacity: 1949, description: 'Fiction', status: '281'},
+    {id: 18, number: 'The Great Gatsby', name: 'F. Scott Fitzgerald', location: 'Fiction', capacity: 1925, description: 'Fiction', status: '281'},
+    {id: 19, number: 'Sapiens', name: 'Yuval Noah Harari', location: 'Non-Fiction', capacity: 2011, description: 'Fiction', status: '281'},
+    {id: 20, number: 'Dune', name: 'Frank Herbert', location: 'Sci-Fi', capacity: 1965, description: 'Fiction', status: '281'},
+  ]
+}
 </script>
 
 <template>
   <v-main>
     <v-container>
-      <section>
-        <h3 class="d-flex justify-space-between align-center text-subtitle-1 font-weight-bold">
-          Promotions
+      <v-sheet border rounded>
+        <v-data-table :headers="headers" :hide-default-footer="rooms.length < 11" :items="rooms">
+          <template v-slot:top>
+            <v-toolbar flat>
+              <v-toolbar-title>
+                会议室列表
+              </v-toolbar-title>
 
-          <v-btn
-              class="text-none"
-              color="primary"
-              prepend-icon="mdi-plus"
-              rounded="lg"
-              slim
-              text="Create promotion"
-              variant="flat"
-          />
-        </h3>
+              <v-btn class="text-none" color="primary" prepend-icon="mdi-plus" rounded="lg" slim text="添加会议室" variant="flat" @click="add"/>
+            </v-toolbar>
+          </template>
 
-        <div class="text-body-2 text-medium-emphasis mb-4 w-100 w-md-75">
-          A list of all the promotions that are currently running.
-        </div>
+          <template v-slot:item.actions="{ item }">
+            <div class="d-flex ga-2 justify-end">
+              <v-icon color="medium-emphasis" icon="mdi-pencil" size="small" @click="edit(item.id)"></v-icon>
 
-        <v-data-table
-            class="bg-transparent"
-            :headers="headers"
-            hide-default-footer
-            :items="items"
-        >
-          <template #item.actions>
-            <v-btn
-                class="text-none"
-                color="primary"
-                min-width="0"
-                slim
-                text="Edit"
-                variant="text"
-            />
+              <v-icon color="medium-emphasis" icon="mdi-delete" size="small" @click="remove(item.id)"></v-icon>
+            </div>
           </template>
         </v-data-table>
-      </section>
+      </v-sheet>
+
+      <v-dialog v-model="dialog" max-width="1024">
+        <v-card :subtitle="`${isEditing ? 'Update' : 'Create'} your favorite book`" :title="`${isEditing ? '编辑' : '新增'} 一个会议室`">
+          <template v-slot:text>
+            <v-row>
+              <v-col cols="12" md="6">
+                <v-text-field v-model="record.number" label="会议室编号"></v-text-field>
+              </v-col>
+
+              <v-col cols="12" md="6">
+                <v-text-field v-model="record.name" label="会议室名称"></v-text-field>
+              </v-col>
+
+              <v-col cols="12" md="6">
+                <v-select v-model="record.status" :items="['available', 'unavailable', 'maintenance']" label="会议室状态"></v-select>
+              </v-col>
+
+              <v-col cols="12" md="6">
+                <v-number-input v-model="record.capacity" :min="1" label="会议室可容纳的人数"></v-number-input>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="12">
+                <v-text-field v-model="record.number" label="会议室所在位置"></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="12">
+                <v-text-field v-model="record.description" label="简介"></v-text-field>
+              </v-col>
+            </v-row>
+          </template>
+
+          <v-divider></v-divider>
+
+          <v-card-actions class="bg-surface-light">
+            <v-btn text="取消" variant="plain" @click="dialog = false"></v-btn>
+
+            <v-spacer></v-spacer>
+
+            <v-btn text="保存" @click="save"></v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-container>
   </v-main>
 </template>
-
-<style scoped>
-
-</style>
