@@ -51,8 +51,15 @@ function save() {
     const index = rows.value.findIndex(x => x.id === record.value.id)
     rows.value[index] = record.value
   } else {
-    record.value.id = rows.value.length + 1
-    rows.value.push(record.value)
+    rows.value.push({
+      id: rows.value.length + 1,
+      number: record.value.number,
+      name: record.value.name,
+      location: record.value.location,
+      capacity: record.value.capacity,
+      description: record.value.description,
+      status: record.value.status,
+    })
   }
 
   dialog.value = false

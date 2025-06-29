@@ -25,7 +25,7 @@ const menuInfo = [
 </script>
 
 <template>
-  <v-navigation-drawer permanent>
+  <v-navigation-drawer permanent class="bg-deep-purple" theme="dark">
     <v-card variant="text" v-bind:title="systemInfo.name" v-bind:subtitle="systemInfo.version"></v-card>
 
     <v-list>
@@ -37,6 +37,12 @@ const menuInfo = [
     <v-list density="compact" nav>
       <v-list-item v-for="(item, i) in menuInfo" :key="i" :value="item" v-bind:prepend-icon="item.icon" v-bind:title="item.text" :to="item.link" color="primary"></v-list-item>
     </v-list>
+
+    <template v-slot:append>
+      <div class="pa-2">
+        <v-btn block to="/login" > 退出</v-btn>
+      </div>
+    </template>
   </v-navigation-drawer>
 </template>
 

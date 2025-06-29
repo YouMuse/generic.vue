@@ -1,10 +1,10 @@
 <template>
-  <v-img class="fill-height" src="https://cdn.pixabay.com/photo/2022/10/07/12/48/sea-7504986_1280.jpg" aspect-ratio="16/9" cover>
+  <v-img class="fill-height" src="/src/assets/sea.jpg" aspect-ratio="16/9" cover>
     <v-container>
       <v-row justify="center">
         <v-col cols="12" md="6">
           <v-card elevation="12">
-            <v-img height="200px" src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg" cover></v-img>
+            <v-img height="200px" src="/src/assets/sunshine.jpg" cover></v-img>
             <v-card-item>
               <v-card-title class="text-center">
                 <h2 class="text-h4 black--text font-weight-bold">

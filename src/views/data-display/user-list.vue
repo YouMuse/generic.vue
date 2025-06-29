@@ -60,11 +60,16 @@ function save() {
     const index = rows.value.findIndex(x => x.id === record.value.id)
     rows.value[index] = record.value
   } else {
-    record.value.id = rows.value.length + 1
-
-    console.log(rows.value.length + 1)
-
-    rows.value.push(record.value)
+    rows.value.push({
+      id: rows.value.length + 1,
+      name: record.value.name,
+      email: record.value.email,
+      nickName: record.value.nickName,
+      phone: record.value.phone,
+      department: record.value.department,
+      role: record.value.role,
+      status: record.value.status,
+    })
   }
 
   dialog.value = false
