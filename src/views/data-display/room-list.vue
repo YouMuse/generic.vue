@@ -4,9 +4,9 @@ import {useDate} from 'vuetify'
 
 const adapter = useDate()
 
-const DEFAULT_RECORD = {id: '', number: '', name: '', location: '', capacity: 0, description: '', status: ''}
+const DEFAULT_RECORD = {id: 0, number: '', name: '', location: '', capacity: 0, description: '', status: ''}
 
-const rooms = ref([])
+const rows = ref([])
 const record = ref(DEFAULT_RECORD)
 const dialog = shallowRef(false)
 const isEditing = shallowRef(false)
@@ -34,7 +34,7 @@ function add() {
 function edit(id) {
   isEditing.value = true
 
-  const found = rooms.value.find(room => room.id === id)
+  const found = rows.value.find(x => x.id === id)
 
   record.value = {id: found.id, number: found.number, name: found.name, location: found.location, capacity: found.capacity, description: found.description, status: found.status}
 
@@ -42,17 +42,17 @@ function edit(id) {
 }
 
 function remove(id) {
-  const index = rooms.value.findIndex(room => room.id === id)
-  rooms.value.splice(index, 1)
+  const index = rows.value.findIndex(x => x.id === id)
+  rows.value.splice(index, 1)
 }
 
 function save() {
   if (isEditing.value) {
-    const index = rooms.value.findIndex(room => room.id === record.value.id)
-    rooms.value[index] = record.value
+    const index = rows.value.findIndex(x => x.id === record.value.id)
+    rows.value[index] = record.value
   } else {
-    record.value.id = rooms.value.length + 1
-    rooms.value.push(record.value)
+    record.value.id = rows.value.length + 1
+    rows.value.push(record.value)
   }
 
   dialog.value = false
@@ -61,7 +61,7 @@ function save() {
 function reset() {
   dialog.value = false
   record.value = DEFAULT_RECORD
-  rooms.value = [
+  rows.value = [
     {id: 1, number: 'To Kill a Mockingbird', name: 'Harper Lee', location: 'Fiction', capacity: 1960, description: 'Fiction', status: '281'},
     {id: 2, number: '1984', name: 'George Orwell', location: 'Dystopian', capacity: 1949, description: 'Fiction', status: '281'},
     {id: 3, number: 'The Great Gatsby', name: 'F. Scott Fitzgerald', location: 'Fiction', capacity: 1925, description: 'Fiction', status: '281'},
@@ -90,7 +90,7 @@ function reset() {
   <v-main>
     <v-container>
       <v-sheet border rounded>
-        <v-data-table :headers="headers" :hide-default-footer="rooms.length < 11" :items="rooms">
+        <v-data-table :headers="headers" :hide-default-footer="rows.length < 11" :items="rows">
           <template v-slot:top>
             <v-toolbar flat>
               <v-toolbar-title>
@@ -112,7 +112,7 @@ function reset() {
       </v-sheet>
 
       <v-dialog v-model="dialog" max-width="1024">
-        <v-card :subtitle="`${isEditing ? 'Update' : 'Create'} your favorite book`" :title="`${isEditing ? '编辑' : '新增'} 一个会议室`">
+        <v-card :title="`${isEditing ? '编辑' : '新增'} 会议室信息`">
           <template v-slot:text>
             <v-row>
               <v-col cols="12" md="6">
