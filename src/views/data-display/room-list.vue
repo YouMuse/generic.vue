@@ -97,7 +97,7 @@ function reset() {
   <v-main>
     <v-container>
       <v-sheet border rounded>
-        <v-data-table :headers="headers" :hide-default-footer="rows.length < 11" :items="rows">
+        <v-data-table :headers="headers" :hide-default-footer="rows.length < 11" :items="rows" items-per-page="12">
           <template v-slot:top>
             <v-toolbar flat>
               <v-toolbar-title>

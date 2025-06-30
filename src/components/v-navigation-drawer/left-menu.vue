@@ -19,13 +19,13 @@ const menuInfo = [
   {text: '会议室管理', icon: 'mdi-star', link: '/room'},
   {text: '设施管理', icon: 'mdi-history', link: '/facility'},
   {text: '预约管理', icon: 'mdi-check-circle', link: '/reserve'},
-  {text: 'Uploads', icon: 'mdi-upload', link: '/4'},
-  {text: 'Backups', icon: 'mdi-cloud-upload', link: '/5'},
+  {text: '测试', icon: 'mdi-upload', link: '/test'},
+  {text: 'Backups', icon: 'mdi-cloud-upload', link: '/appointment'},
 ]
 </script>
 
 <template>
-  <v-navigation-drawer permanent class="bg-deep-purple" theme="dark">
+  <v-navigation-drawer permanent>
     <v-card variant="text" v-bind:title="systemInfo.name" v-bind:subtitle="systemInfo.version"></v-card>
 
     <v-list>

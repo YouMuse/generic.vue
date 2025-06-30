@@ -103,6 +103,38 @@ export function installRouter(app) {
                     }
                 }
             ]
+        },
+        {
+            path: "/appointment",
+            component: () => import('@/layouts/constrained.vue'),
+            meta: {
+                title: '预约会议'
+            },
+            children: [
+                {
+                    path: "/appointment",
+                    component: () => import('@/views/form/appointment.vue'),
+                    meta: {
+                        title: '预约会议'
+                    }
+                }
+            ]
+        },
+        {
+            path: "/test",
+            component: () => import('@/layouts/constrained.vue'),
+            meta: {
+                title: '预约会议测试'
+            },
+            children: [
+                {
+                    path: "/test",
+                    component: () => import('@/views/form/Test.vue'),
+                    meta: {
+                        title: '预约会议测试'
+                    }
+                }
+            ]
         }
     ]
     routeArray.forEach(route => {
