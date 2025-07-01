@@ -14,12 +14,12 @@
         <v-col cols="4" sm="4" xl="2">
           <v-container>
             <v-row>
-              <v-card prepend-icon="mdi-filter" title="筛选条件">
+              <v-card prepend-icon="mdi-filter" class="mx-auto" title="筛选条件">
                 <v-card-text>
                   <v-row>
                     <v-col cols="12">
                       <v-col cols="12">
-                        <v-date-picker locale="zh-cn" color="primary" variant="outlined"></v-date-picker>
+                        <v-text-field label="日期" type="date" variant="outlined"></v-text-field>
                       </v-col>
                     </v-col>
                   </v-row>
