@@ -9,11 +9,11 @@ const links = [
 <template>
   <v-app-bar flat>
     <v-container class="mx-auto d-flex align-center justify-center">
-      <v-avatar class="me-4" color="primary" size="32">
+      <v-avatar class="me-4" size="32">
         <v-icon icon="mdi-calendar-check"></v-icon>
       </v-avatar>
 
-      <h3 class="d-flex justify-space-between align-center text-subtitle-1 font-weight-bold">会议室预约系统</h3>
+      <h3 class="text-subtitle-1 font-weight-bold">会议室预约系统</h3>
 
       <v-spacer></v-spacer>
 
