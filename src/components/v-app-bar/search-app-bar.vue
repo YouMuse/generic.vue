@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <v-app-bar color="primary">
+  <v-app-bar>
     <v-container fluid class="mx-auto align-center d-flex">
       <v-responsive max-width="260">
         <v-text-field append-inner-icon="mdi-magnify" density="compact" label="Search" variant="outlined" hide-details single-line></v-text-field>

@@ -79,8 +79,8 @@ function reset() {
   dialog.value = false
   record.value = DEFAULT_RECORD
   rows.value = [
-    {id: 1, name: 'Harper Lee', email: 'Fiction', nickName: 'Fiction', phone: 'Fiction', department: {title: 'A科', value: 'A'}, role: 'Fiction', status: '281'},
-    {id: 2, name: 'Harper Lee', email: 'Fiction', nickName: 'Fiction', phone: 'Fiction', department: {title: 'B科', value: 'B'}, role: 'Fiction', status: '281'},
+    {id: 1, name: 'Harper Lee', email: 'Fiction', nickName: 'Fiction', phone: 'Fiction', department: {id: 1, title: 'A科', value: 'A'}, role: 'Fiction', status: '281'},
+    {id: 2, name: 'Harper Lee', email: 'Fiction', nickName: 'Fiction', phone: 'Fiction', department: {id: 2, title: 'B科', value: 'B'}, role: 'Fiction', status: '281'},
   ]
 }
 </script>

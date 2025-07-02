@@ -124,14 +124,14 @@ export function installRouter(app) {
             path: "/test",
             component: () => import('@/layouts/constrained.vue'),
             meta: {
-                title: '预约会议测试'
+                title: '测试'
             },
             children: [
                 {
                     path: "/test",
                     component: () => import('@/views/form/Test.vue'),
                     meta: {
-                        title: '预约会议测试'
+                        title: '测试'
                     }
                 }
             ]

@@ -1,10 +1,10 @@
 <script setup>
-import routine from '@/components/v-app-bar/routine-app-bar.vue'
+import HomeAppBar from '@/components/v-app-bar/home-app-bar.vue'
 </script>
 
 <template>
   <v-app id="inspire">
-    <routine/>
+    <HomeAppBar/>
 
     <router-view/>
   </v-app>
