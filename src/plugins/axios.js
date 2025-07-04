@@ -1,8 +1,13 @@
 import axios from 'axios'
 
 const instance = axios.create({
-    baseURL: 'https://jsonplaceholder.typicode.com/',
+    baseURL: '/api',
     timeout: 5000,
+    headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+    }
+
 })
 
 instance.interceptors.request.use(

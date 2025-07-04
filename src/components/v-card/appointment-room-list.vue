@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {onMounted, ref} from 'vue'
 import {useDate} from 'vuetify'
+import {GetAppointmentRoomList} from '@/services/schedulingService.js'
 
 interface SearchFormData {
   id: number
@@ -52,6 +53,15 @@ function more() {
 }
 
 function reset() {
+  GetAppointmentRoomList()
+      .then(response => {
+        const data = response.data;
+        console.log(data);
+      })
+      .catch(error => {
+        console.error('获取数据失败:', error);
+      })
+
   rows.value = [
     {id: 1, number: '1-1-1', name: 'A101会议室', location: '总部大楼15层', capacity: 15, description: '宽敞明亮的会议室，配备高清投影仪、智能白板和视频会议系统，适合团队会议和客户演示。', facility: [{id: 1, title: '投影仪', value: '1'}, {id: 1, title: '白板', value: '2'}], time: {startTime: '2025/07/02 09:00:00', endTime: "2025/07/02 18:00:00"}, photo: [{url: "https://cdn.vuetifyjs.com/images/cards/foster.jpg"}, {url: "https://cdn.vuetifyjs.com/images/cards/foster.jpg"}], status: {title: '可预约', value: '0'}},
     {id: 2, number: '1-1-2', name: 'A102会议室', location: '总部大楼15层', capacity: 15, description: '宽敞明亮的会议室，配备高清投影仪、智能白板和视频会议系统，适合团队会议和客户演示。', facility: [{id: 1, title: '投影仪', value: '1'}, {id: 1, title: '白板', value: '2'}], time: {startTime: '2025/07/02 09:00:00', endTime: "2025/07/02 18:00:00"}, photo: [{url: "https://cdn.vuetifyjs.com/images/cards/foster.jpg"}, {url: "https://cdn.vuetifyjs.com/images/cards/foster.jpg"}], status: {title: '可预约', value: '0'}},

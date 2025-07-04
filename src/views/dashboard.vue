@@ -33,7 +33,7 @@ const dataList = ref([])
 
 const fetchData = async () => {
   try {
-    dataList.value = (await getPost()).data;
+    // dataList.value = (await getPost()).data;
   } catch (error) {
     console.error(error);
   }
