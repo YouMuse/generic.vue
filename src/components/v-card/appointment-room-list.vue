@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import {onMounted, ref} from 'vue'
-import {useDate} from 'vuetify'
+import {onMounted, ref, shallowRef} from 'vue'
+
 import {GetAppointmentRoomList} from '@/services/schedulingService.js'
 
 interface SearchFormData {
@@ -8,15 +8,16 @@ interface SearchFormData {
   date: string
   startTime: string
   endTime: string
-  capacity: { id: number, title: string, value: string }
+  capacity: number
   facility: { id: number, title: string, value: string }
   location: { id: number, title: string, value: string }
 }
 
-
-const adapter = useDate()
+const DEFAULT_RECORD = {id: 1, number: '1-1-1', name: 'A101会议室', location: '总部大楼15层', capacity: 15, description: '宽敞明亮的会议室，配备高清投影仪、智能白板和视频会议系统，适合团队会议和客户演示。', facility: [{id: 1, title: '投影仪', value: '1'}, {id: 1, title: '白板', value: '2'}], time: {startTime: '2025/07/02 09:00:00', endTime: "2025/07/02 18:00:00"}, photo: [{url: "https://cdn.vuetifyjs.com/images/cards/foster.jpg"}, {url: "https://cdn.vuetifyjs.com/images/cards/foster.jpg"}], status: {title: '可预约', value: '0'}}
 
 const rows = ref([])
+const record = ref(DEFAULT_RECORD)
+const dialog = shallowRef(false)
 
 const formatTime = (datetime: string) => {
   return datetime.split(' ')[1].substring(0, 5)
@@ -26,17 +27,13 @@ onMounted(() => {
   reset()
 })
 
-function save(id: string) {
-  console.log(id)
-}
-
 async function search(formData: SearchFormData) {
   try {
     const params = {
       date: formData.date,
       startTime: formData.startTime,
       endTime: formData.endTime,
-      capacity: formData.capacity.value,
+      capacity: formData.capacity,
       location: formData.location.value
     }
 
@@ -52,28 +49,54 @@ function more() {
   console.log('more')
 }
 
-function reset() {
-  GetAppointmentRoomList()
-      .then(response => {
-        const data = response.data;
-        console.log(data);
-      })
-      .catch(error => {
-        console.error('获取数据失败:', error);
-      })
+function appointment() {
+  try {
+    const index = rows.value.findIndex(x => x.id === record.value.id)
 
-  rows.value = [
-    {id: 1, number: '1-1-1', name: 'A101会议室', location: '总部大楼15层', capacity: 15, description: '宽敞明亮的会议室，配备高清投影仪、智能白板和视频会议系统，适合团队会议和客户演示。', facility: [{id: 1, title: '投影仪', value: '1'}, {id: 1, title: '白板', value: '2'}], time: {startTime: '2025/07/02 09:00:00', endTime: "2025/07/02 18:00:00"}, photo: [{url: "https://cdn.vuetifyjs.com/images/cards/foster.jpg"}, {url: "https://cdn.vuetifyjs.com/images/cards/foster.jpg"}], status: {title: '可预约', value: '0'}},
-    {id: 2, number: '1-1-2', name: 'A102会议室', location: '总部大楼15层', capacity: 15, description: '宽敞明亮的会议室，配备高清投影仪、智能白板和视频会议系统，适合团队会议和客户演示。', facility: [{id: 1, title: '投影仪', value: '1'}, {id: 1, title: '白板', value: '2'}], time: {startTime: '2025/07/02 09:00:00', endTime: "2025/07/02 18:00:00"}, photo: [{url: "https://cdn.vuetifyjs.com/images/cards/foster.jpg"}, {url: "https://cdn.vuetifyjs.com/images/cards/foster.jpg"}], status: {title: '可预约', value: '0'}},
-    {id: 3, number: '1-1-3', name: 'A103会议室', location: '总部大楼15层', capacity: 15, description: '宽敞明亮的会议室，配备高清投影仪、智能白板和视频会议系统，适合团队会议和客户演示。', facility: [{id: 1, title: '投影仪', value: '1'}, {id: 1, title: '白板', value: '2'}], time: {startTime: '2025/07/02 09:00:00', endTime: "2025/07/02 18:00:00"}, photo: [{url: "https://cdn.vuetifyjs.com/images/cards/foster.jpg"}, {url: "https://cdn.vuetifyjs.com/images/cards/foster.jpg"}], status: {title: '可预约', value: '0'}},
-    {id: 4, number: '1-1-4', name: 'A104会议室', location: '总部大楼15层', capacity: 15, description: '宽敞明亮的会议室，配备高清投影仪、智能白板和视频会议系统，适合团队会议和客户演示。', facility: [{id: 1, title: '投影仪', value: '1'}, {id: 1, title: '白板', value: '2'}], time: {startTime: '2025/07/02 09:00:00', endTime: "2025/07/02 18:00:00"}, photo: [{url: "https://cdn.vuetifyjs.com/images/cards/foster.jpg"}, {url: "https://cdn.vuetifyjs.com/images/cards/foster.jpg"}], status: {title: '可预约', value: '0'}},
-    {id: 5, number: '1-1-5', name: 'A105会议室', location: '总部大楼15层', capacity: 15, description: '宽敞明亮的会议室，配备高清投影仪、智能白板和视频会议系统，适合团队会议和客户演示。', facility: [{id: 1, title: '投影仪', value: '1'}, {id: 1, title: '白板', value: '2'}], time: {startTime: '2025/07/02 09:00:00', endTime: "2025/07/02 18:00:00"}, photo: [{url: "https://cdn.vuetifyjs.com/images/cards/foster.jpg"}, {url: "https://cdn.vuetifyjs.com/images/cards/foster.jpg"}], status: {title: '可预约', value: '0'}},
-    {id: 6, number: '1-1-5', name: 'A106会议室', location: '总部大楼15层', capacity: 15, description: '宽敞明亮的会议室，配备高清投影仪、智能白板和视频会议系统，适合团队会议和客户演示。', facility: [{id: 1, title: '投影仪', value: '1'}, {id: 1, title: '白板', value: '2'}], time: {startTime: '2025/07/02 09:00:00', endTime: "2025/07/02 18:00:00"}, photo: [{url: "https://cdn.vuetifyjs.com/images/cards/foster.jpg"}, {url: "https://cdn.vuetifyjs.com/images/cards/foster.jpg"}], status: {title: '可预约', value: '0'}},
-    {id: 7, number: '1-1-6', name: 'A107会议室', location: '总部大楼15层', capacity: 15, description: '宽敞明亮的会议室，配备高清投影仪、智能白板和视频会议系统，适合团队会议和客户演示。', facility: [{id: 1, title: '投影仪', value: '1'}, {id: 1, title: '白板', value: '2'}], time: {startTime: '2025/07/02 09:00:00', endTime: "2025/07/02 18:00:00"}, photo: [{url: "https://cdn.vuetifyjs.com/images/cards/foster.jpg"}, {url: "https://cdn.vuetifyjs.com/images/cards/foster.jpg"}], status: {title: '可预约', value: '0'}},
-  ]
+    // const found = rows.value.find(x => x.id === id)
+    //
+    // const params = {
+    //   date: found.date,
+    //   startTime: found.startTime,
+    //   endTime: found.endTime,
+    //   capacity: found.capacity,
+    //   location: found.location
+    // }
+
+    // const response = await axios.post('/api/rooms/search', params)
+
+    // rows.value = await response.json()
+
+    const found = rows.value.find(x => x.id === record.value.id)
+
+    console.log(found)
+  } catch (error) {
+    console.error('预约会议室失败：', error)
+  }
+
+  dialog.value = false
 }
 
-defineExpose({more, search})
+function save(id: string) {
+  const found = rows.value.find(x => x.id === id)
+
+  record.value = {id: found.id, name: found.name, location: found.location, capacity: found.capacity, description: found.description, facility: found.facility, time: found.time, status: found.status}
+
+  dialog.value = true
+}
+
+function reset() {
+  dialog.value = false
+
+  GetAppointmentRoomList().then(response => {
+    rows.value = response.data
+  }).catch(error => {
+    console.error('获取数据失败:', error);
+  })
+
+}
+
+defineExpose({search})
 </script>
 
 <template>
@@ -84,7 +107,7 @@ defineExpose({more, search})
           <v-card hover>
             <div class="d-flex justify-start">
               <v-avatar class="ma-3" rounded="0" size="250">
-                <v-img :src="item.photo[0].url"></v-img>
+                <v-img src="https://cdn.vuetifyjs.com/images/cards/foster.jpg"></v-img>
               </v-avatar>
 
               <v-card variant="text">
@@ -99,10 +122,10 @@ defineExpose({more, search})
                         {{ item.capacity }}
                       </v-chip>
                       <v-chip color="teal" prepend-icon="mdi-map-marker">
-                        {{ item.location }}
+                        {{ item.location.title }}
                       </v-chip>
                       <v-chip color="teal" prepend-icon="mdi-clock-time-seven-outline">
-                        {{ formatTime(item.time.startTime) }}-{{ formatTime(item.time.endTime) }}
+                        {{ item.time.startTime }}-{{ item.time.endTime }}
                       </v-chip>
                     </div>
                   </v-card-subtitle>
@@ -134,6 +157,28 @@ defineExpose({more, search})
       <v-btn class="text-none" color="primary" append-icon="mdi-refresh" rounded="lg" text="加载更多" variant="outlined" @click="more"/>
     </v-card-actions>
   </v-card>
+
+  <v-dialog v-model="dialog" max-width="512">
+    <v-card title="填写预约信息">
+      <template v-slot:text>
+        <v-row>
+          <v-col cols="12">
+            <v-text-field v-model="record.name" label="电话号码"></v-text-field>
+          </v-col>
+        </v-row>
+      </template>
+
+      <v-divider></v-divider>
+
+      <v-card-actions class="bg-surface-light">
+        <v-btn text="取消" variant="plain" @click="dialog = false"></v-btn>
+
+        <v-spacer></v-spacer>
+
+        <v-btn text="保存" @click="appointment"></v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <style scoped>

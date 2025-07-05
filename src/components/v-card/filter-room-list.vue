@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import {onMounted, ref} from 'vue'
+import {useDate} from 'vuetify'
+
+import {DictionaryList} from '@/services/dictionaryService.js'
+import {GetFacilityList} from '@/services/facilityService.js'
 
 const emit = defineEmits(['search'])
 
@@ -8,35 +12,27 @@ const onSubmit = (e: Event) => {
   emit('search', record.value)
 }
 
-const DEFAULT_RECORD = {id: 0, date: new Date().toISOString().split('T')[0], startTime: '09:00', endTime: '18:00', capacity: {id: 1, title: '3', value: '3'}, facility: {id: 1, title: '投影仪', value: '1'}, location: {id: 1, title: '总部大楼15层', value: '1'}}
+const DEFAULT_RECORD = {id: 0, date: new Date().toISOString().split('T')[0], startTime: '09:00', endTime: '18:00', capacity: 2, facility: null, location: null}
 
 const record = ref(DEFAULT_RECORD)
-const capacity = ref([])
 const facility = ref([])
 const location = ref([])
 
 function reset() {
   record.value = DEFAULT_RECORD
-  capacity.value = [
-    {id: 1, title: '3', value: '3'},
-    {id: 2, title: '5', value: '5'},
-    {id: 3, title: '10', value: '10'},
-    {id: 4, title: '15', value: '15'},
-    {id: 5, title: '25', value: '25'},
-    {id: 6, title: '35', value: '35'},
-  ]
-  facility.value = [
-    {id: 1, title: '投影仪', value: '1'},
-    {id: 2, title: '白板', value: '2'},
-    {id: 3, title: '视频会议', value: '3'},
-    {id: 4, title: '音响系统', value: '4'},
-    {id: 5, title: '高速WiFi', value: '5'},
-  ]
-  location.value = [
-    {id: 1, title: '总部大楼15层', value: '1'},
-    {id: 2, title: '研发中心2层', value: '2'},
-    {id: 3, title: '总部大楼3层', value: '3'},
-  ]
+
+  GetFacilityList().then(response => {
+    facility.value = response.data
+  }).catch(error => {
+    console.error('获取数据失败:', error);
+  })
+
+  DictionaryList({typeCode: 'ROOM_LOCATION'}).then(response => {
+    location.value = response.data
+  }).catch(error => {
+    console.error('获取数据失败:', error);
+  })
+
 }
 
 onMounted(() => {
@@ -50,6 +46,7 @@ onMounted(() => {
       <v-card-text>
         <v-row>
           <v-col cols="12">
+            {{ record.date }}
             <v-text-field v-model="record.date" label="日期" type="date" variant="outlined"></v-text-field>
           </v-col>
         </v-row>
@@ -63,12 +60,12 @@ onMounted(() => {
         </v-row>
         <v-row>
           <v-col cols="12">
-            <v-select v-model="record.capacity" :items="capacity" item-title="title" item-value="value" return-object label="容纳人数" variant="outlined" prepend-inner-icon="mdi-account-group"></v-select>
+            <v-number-input v-model="record.capacity" label="容纳人数" control-variant="default" :min="2" variant="outlined" prepend-inner-icon="mdi-account-group"></v-number-input>
           </v-col>
         </v-row>
         <v-row>
           <v-col cols="12">
-            <v-combobox v-model="record.facility" :items="facility" item-title="title" item-value="value" label="设施要求" chips multiple></v-combobox>
+            <v-combobox v-model="record.facility" :items="facility" item-title="name" item-value="id" label="设施要求" chips multiple prepend-inner-icon="mdi-human-male-board"></v-combobox>
           </v-col>
         </v-row>
         <v-row>
