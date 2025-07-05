@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import {onMounted, ref} from 'vue'
-import {useDate} from 'vuetify'
 
 import {DictionaryList} from '@/services/dictionaryService.js'
 import {GetFacilityList} from '@/services/facilityService.js'
@@ -46,7 +45,6 @@ onMounted(() => {
       <v-card-text>
         <v-row>
           <v-col cols="12">
-            {{ record.date }}
             <v-text-field v-model="record.date" label="日期" type="date" variant="outlined"></v-text-field>
           </v-col>
         </v-row>
@@ -65,7 +63,7 @@ onMounted(() => {
         </v-row>
         <v-row>
           <v-col cols="12">
-            <v-combobox v-model="record.facility" :items="facility" item-title="name" item-value="id" label="设施要求" chips multiple prepend-inner-icon="mdi-human-male-board"></v-combobox>
+            <v-combobox v-model="record.facility" :items="facility" item-title="title" item-value="id" label="设施要求" chips multiple prepend-inner-icon="mdi-human-male-board"></v-combobox>
           </v-col>
         </v-row>
         <v-row>

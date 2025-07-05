@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {onMounted, ref, shallowRef} from 'vue'
 
-import {GetAppointmentRoomList} from '@/services/schedulingService.js'
+import {GetAppointmentRoomList, SearchAppointmentRoomList} from '@/services/schedulingService.js'
 
 interface SearchFormData {
   id: number
@@ -19,30 +19,25 @@ const rows = ref([])
 const record = ref(DEFAULT_RECORD)
 const dialog = shallowRef(false)
 
-const formatTime = (datetime: string) => {
-  return datetime.split(' ')[1].substring(0, 5)
-}
-
 onMounted(() => {
   reset()
 })
 
 async function search(formData: SearchFormData) {
-  try {
-    const params = {
-      date: formData.date,
-      startTime: formData.startTime,
-      endTime: formData.endTime,
-      capacity: formData.capacity,
-      location: formData.location.value
-    }
-
-    // const response = await axios.post('/api/rooms/search', params)
-
-    // rows.value = await response.json()
-  } catch (error) {
-    console.error('获取会议室列表失败：', error)
+  const params = {
+    date: formData.date,
+    startTime: formData.startTime,
+    endTime: formData.endTime,
+    capacity: formData.capacity,
+    facility: formData.facility,
+    location: formData.location,
   }
+
+  SearchAppointmentRoomList(params).then(response => {
+    rows.value = response.data
+  }).catch(error => {
+    console.error('获取数据失败:', error);
+  })
 }
 
 function more() {
@@ -51,7 +46,7 @@ function more() {
 
 function appointment() {
   try {
-    const index = rows.value.findIndex(x => x.id === record.value.id)
+    // const index = rows.value.findIndex(x => x.id === record.value.id)
 
     // const found = rows.value.find(x => x.id === id)
     //
