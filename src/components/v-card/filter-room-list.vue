@@ -68,7 +68,7 @@ onMounted(() => {
         </v-row>
         <v-row>
           <v-col cols="12">
-            <v-select v-model="record.location" :items="location" item-title="title" item-value="value" return-object label="会议地点" variant="outlined" prepend-inner-icon="mdi-map-marker"></v-select>
+            <v-select v-model="record.location" :items="location" item-title="title" item-value="value" label="会议地点" variant="outlined" prepend-inner-icon="mdi-map-marker" return-object></v-select>
           </v-col>
         </v-row>
       </v-card-text>

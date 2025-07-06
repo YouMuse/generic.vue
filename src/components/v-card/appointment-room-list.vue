@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import {onMounted, ref, shallowRef} from 'vue'
 
-import {GetAppointmentRoomList, SearchAppointmentRoomList} from '@/services/schedulingService.js'
+import {GetAppointmentRoomList, SearchAppointmentRoomList, Appointment} from '@/services/schedulingService.js'
+import {DepartmentList} from '@/services/departmentService.js'
 
 interface SearchFormData {
   id: number
@@ -13,9 +14,10 @@ interface SearchFormData {
   location: { id: number, title: string, value: string }
 }
 
-const DEFAULT_RECORD = {id: 1, number: '1-1-1', name: 'A101会议室', location: '总部大楼15层', capacity: 15, description: '宽敞明亮的会议室，配备高清投影仪、智能白板和视频会议系统，适合团队会议和客户演示。', facility: [{id: 1, title: '投影仪', value: '1'}, {id: 1, title: '白板', value: '2'}], time: {startTime: '2025/07/02 09:00:00', endTime: "2025/07/02 18:00:00"}, photo: [{url: "https://cdn.vuetifyjs.com/images/cards/foster.jpg"}, {url: "https://cdn.vuetifyjs.com/images/cards/foster.jpg"}], status: {title: '可预约', value: '0'}}
+const DEFAULT_RECORD = {appointment: {title: '', contactName: '', contactPhone: '', department: null, date: new Date().toISOString().split('T')[0], startTime: '', endTime: '', attendeesCount: 2, description: ''}, scheduling: {Id: null}}
 
 const rows = ref([])
+const department = ref([])
 const record = ref(DEFAULT_RECORD)
 const dialog = shallowRef(false)
 
@@ -45,37 +47,19 @@ function more() {
 }
 
 function appointment() {
-  try {
-    // const index = rows.value.findIndex(x => x.id === record.value.id)
-
-    // const found = rows.value.find(x => x.id === id)
-    //
-    // const params = {
-    //   date: found.date,
-    //   startTime: found.startTime,
-    //   endTime: found.endTime,
-    //   capacity: found.capacity,
-    //   location: found.location
-    // }
-
-    // const response = await axios.post('/api/rooms/search', params)
-
-    // rows.value = await response.json()
-
-    const found = rows.value.find(x => x.id === record.value.id)
-
-    console.log(found)
-  } catch (error) {
-    console.error('预约会议室失败：', error)
-  }
+  Appointment(record.value).then(response => {
+    rows.value = response.data
+  }).catch(error => {
+    console.error('获取数据失败:', error);
+  })
 
   dialog.value = false
 }
 
-function save(id: string) {
+function submit(id: string) {
   const found = rows.value.find(x => x.id === id)
 
-  record.value = {id: found.id, name: found.name, location: found.location, capacity: found.capacity, description: found.description, facility: found.facility, time: found.time, status: found.status}
+  record.value = {appointment: {department: null, date: found.date.split('T')[0], startTime: found.time.startTime, endTime: found.time.endTime, attendeesCount: 2}, scheduling: {Id: found.id}}
 
   dialog.value = true
 }
@@ -85,6 +69,12 @@ function reset() {
 
   GetAppointmentRoomList().then(response => {
     rows.value = response.data
+  }).catch(error => {
+    console.error('获取数据失败:', error);
+  })
+
+  DepartmentList().then(response => {
+    department.value = response.data
   }).catch(error => {
     console.error('获取数据失败:', error);
   })
@@ -138,7 +128,7 @@ defineExpose({search})
                 </v-card-text>
 
                 <v-card-actions>
-                  <v-btn class="text-none" color="primary" rounded="lg" text="立即预约" variant="flat" @click="save(item.id)"/>
+                  <v-btn class="text-none" color="primary" rounded="lg" text="立即预约" variant="flat" @click="submit(item.id)"/>
                 </v-card-actions>
               </v-card>
 
@@ -153,12 +143,44 @@ defineExpose({search})
     </v-card-actions>
   </v-card>
 
-  <v-dialog v-model="dialog" max-width="512">
+  <v-dialog v-model="dialog" max-width="1080">
     <v-card title="填写预约信息">
       <template v-slot:text>
         <v-row>
+          <v-col cols="4">
+            <v-text-field v-model="record.appointment.date" label="预约日期" type="date" variant="outlined" disabled></v-text-field>
+          </v-col>
+          <v-col cols="4">
+            <v-text-field v-model="record.appointment.startTime" label="开始时间" type="time" variant="outlined" disabled></v-text-field>
+          </v-col>
+          <v-col cols="4">
+            <v-text-field v-model="record.appointment.endTime" label="结束时间" type="time" variant="outlined" disabled></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row>
           <v-col cols="12">
-            <v-text-field v-model="record.name" label="电话号码"></v-text-field>
+            <v-text-field v-model="record.appointment.title" label="会议主题" variant="outlined"></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="6">
+            <v-text-field v-model="record.appointment.contactName" label="联系人姓名" variant="outlined"></v-text-field>
+          </v-col>
+          <v-col cols="6">
+            <v-text-field v-model="record.appointment.contactPhone" label="联系人电话" variant="outlined"></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="6">
+            <v-select v-model="record.appointment.department" :items="department" item-title="title" item-value="id"  return-object label="部门" variant="outlined" prepend-inner-icon="mdi-office-building"></v-select>
+          </v-col>
+          <v-col cols="6">
+            <v-number-input v-model="record.appointment.attendeesCount" label="参会人数" control-variant="default" :min="2" variant="outlined" prepend-inner-icon="mdi-account-group"></v-number-input>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12">
+            <v-textarea v-model="record.appointment.description" label="会议说明" variant="outlined" clear-icon="mdi-close-circle" prepend-inner-icon="mdi-comment" clearable counter></v-textarea>
           </v-col>
         </v-row>
       </template>

@@ -29,9 +29,9 @@ export const SearchAppointmentRoomList = async (params) => {
 }
 
 // 预约会议室
-export const BookAppointmentRoom = async (bookingData) => {
+export const Appointment = async (params) => {
     try {
-        const response = await instance.post('Scheduling/BookRoom', bookingData);
+        const response = await instance.post('Scheduling/Appointment', params);
         if (!response?.data || response.data.code !== 1) {
             return null;
         }
