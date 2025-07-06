@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {onMounted, ref, shallowRef} from 'vue'
 
-import {GetAppointmentRoomList, SearchAppointmentRoomList, Appointment} from '@/services/schedulingService.js'
+import {GetAppointmentRoomList, SearchAppointmentRoomList, Reserve} from '@/services/schedulingService.js'
 import {DepartmentList} from '@/services/departmentService.js'
 
 interface SearchFormData {
@@ -14,16 +14,22 @@ interface SearchFormData {
   location: { id: number, title: string, value: string }
 }
 
-const DEFAULT_RECORD = {appointment: {title: '', contactName: '', contactPhone: '', department: null, date: new Date().toISOString().split('T')[0], startTime: '', endTime: '', attendeesCount: 2, description: ''}, scheduling: {Id: null}}
+const DEFAULT_RECORD = {reserve: {title: '', contactName: '', contactPhone: '', department: null, date: new Date().toISOString().split('T')[0], startTime: '', endTime: '', attendeesCount: 2, description: ''}, scheduling: {Id: null}}
 
+const form = ref()
 const rows = ref([])
 const department = ref([])
 const record = ref(DEFAULT_RECORD)
 const dialog = shallowRef(false)
 
-onMounted(() => {
-  reset()
-})
+function required(v: any) {
+  return !!v || '必填字段'
+}
+
+function formatTime(time: string) {
+  if (!time) return ''
+  return time.substring(0, 5)
+}
 
 async function search(formData: SearchFormData) {
   const params = {
@@ -42,24 +48,28 @@ async function search(formData: SearchFormData) {
   })
 }
 
-function more() {
-  console.log('more')
-}
+// function more() {
+//   console.log('more')
+// }
 
 function appointment() {
-  Appointment(record.value).then(response => {
-    rows.value = response.data
-  }).catch(error => {
-    console.error('获取数据失败:', error);
-  })
+  form.value.validate().then(function (results: any) {
+    if (!results.valid) return
 
-  dialog.value = false
+    Reserve(record.value).catch(error => {
+      console.error('预约失败:', error);
+    })
+
+    dialog.value = false
+
+    reset()
+  })
 }
 
 function submit(id: string) {
   const found = rows.value.find(x => x.id === id)
 
-  record.value = {appointment: {department: null, date: found.date.split('T')[0], startTime: found.time.startTime, endTime: found.time.endTime, attendeesCount: 2}, scheduling: {Id: found.id}}
+  record.value = {reserve: {department: null, date: found.date.split('T')[0], startTime: found.time.startTime, endTime: found.time.endTime, attendeesCount: 2}, scheduling: {Id: found.id}}
 
   dialog.value = true
 }
@@ -80,6 +90,10 @@ function reset() {
   })
 
 }
+
+onMounted(() => {
+  reset()
+})
 
 defineExpose({search})
 </script>
@@ -110,7 +124,7 @@ defineExpose({search})
                         {{ item.location.title }}
                       </v-chip>
                       <v-chip color="teal" prepend-icon="mdi-clock-time-seven-outline">
-                        {{ item.time.startTime }}-{{ item.time.endTime }}
+                        {{ formatTime(item.time.startTime) }}-{{ formatTime(item.time.endTime) }}
                       </v-chip>
                     </div>
                   </v-card-subtitle>
@@ -138,62 +152,64 @@ defineExpose({search})
       </v-row>
     </v-card-text>
 
-    <v-card-actions class="justify-center">
-      <v-btn class="text-none" color="primary" append-icon="mdi-refresh" rounded="lg" text="加载更多" variant="outlined" @click="more"/>
-    </v-card-actions>
+    <!--    <v-card-actions class="justify-center">-->
+    <!--      <v-btn class="text-none" color="primary" append-icon="mdi-refresh" rounded="lg" text="加载更多" variant="outlined" @click="more"/>-->
+    <!--    </v-card-actions>-->
   </v-card>
 
   <v-dialog v-model="dialog" max-width="1080">
     <v-card title="填写预约信息">
-      <template v-slot:text>
-        <v-row>
-          <v-col cols="4">
-            <v-text-field v-model="record.appointment.date" label="预约日期" type="date" variant="outlined" disabled></v-text-field>
-          </v-col>
-          <v-col cols="4">
-            <v-text-field v-model="record.appointment.startTime" label="开始时间" type="time" variant="outlined" disabled></v-text-field>
-          </v-col>
-          <v-col cols="4">
-            <v-text-field v-model="record.appointment.endTime" label="结束时间" type="time" variant="outlined" disabled></v-text-field>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="12">
-            <v-text-field v-model="record.appointment.title" label="会议主题" variant="outlined"></v-text-field>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="6">
-            <v-text-field v-model="record.appointment.contactName" label="联系人姓名" variant="outlined"></v-text-field>
-          </v-col>
-          <v-col cols="6">
-            <v-text-field v-model="record.appointment.contactPhone" label="联系人电话" variant="outlined"></v-text-field>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="6">
-            <v-select v-model="record.appointment.department" :items="department" item-title="title" item-value="id"  return-object label="部门" variant="outlined" prepend-inner-icon="mdi-office-building"></v-select>
-          </v-col>
-          <v-col cols="6">
-            <v-number-input v-model="record.appointment.attendeesCount" label="参会人数" control-variant="default" :min="2" variant="outlined" prepend-inner-icon="mdi-account-group"></v-number-input>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="12">
-            <v-textarea v-model="record.appointment.description" label="会议说明" variant="outlined" clear-icon="mdi-close-circle" prepend-inner-icon="mdi-comment" clearable counter></v-textarea>
-          </v-col>
-        </v-row>
-      </template>
+      <v-form ref="form">
+        <v-container>
+          <v-row>
+            <v-col cols="4">
+              <v-text-field v-model="record.reserve.date" label="预约日期" type="date" variant="outlined" disabled></v-text-field>
+            </v-col>
+            <v-col cols="4">
+              <v-text-field v-model="record.reserve.startTime" label="开始时间" type="time" variant="outlined" disabled></v-text-field>
+            </v-col>
+            <v-col cols="4">
+              <v-text-field v-model="record.reserve.endTime" label="结束时间" type="time" variant="outlined" disabled></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="12">
+              <v-text-field v-model="record.reserve.title" :rules="[required]" label="会议主题" variant="outlined"></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="6">
+              <v-text-field v-model="record.reserve.contactName" :rules="[required]" label="联系人姓名" variant="outlined"></v-text-field>
+            </v-col>
+            <v-col cols="6">
+              <v-text-field v-model="record.reserve.contactPhone" :rules="[required]" label="联系人电话" variant="outlined"></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="6">
+              <v-select v-model="record.reserve.department" :items="department" item-title="title" item-value="id" :rules="[required]" label="部门" variant="outlined" prepend-inner-icon="mdi-office-building" return-object></v-select>
+            </v-col>
+            <v-col cols="6">
+              <v-number-input v-model="record.reserve.attendeesCount" label="参会人数" control-variant="default" :min="2" variant="outlined" prepend-inner-icon="mdi-account-group"></v-number-input>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="12">
+              <v-textarea v-model="record.reserve.description" label="会议说明" variant="outlined" clear-icon="mdi-close-circle" prepend-inner-icon="mdi-comment" clearable counter></v-textarea>
+            </v-col>
+          </v-row>
 
-      <v-divider></v-divider>
+          <v-divider></v-divider>
 
-      <v-card-actions class="bg-surface-light">
-        <v-btn text="取消" variant="plain" @click="dialog = false"></v-btn>
+          <v-card-actions class="bg-surface-light">
+            <v-btn text="取消" variant="plain" @click="dialog = false"></v-btn>
 
-        <v-spacer></v-spacer>
+            <v-spacer></v-spacer>
 
-        <v-btn text="保存" @click="appointment"></v-btn>
-      </v-card-actions>
+            <v-btn text="保存" @click="appointment"></v-btn>
+          </v-card-actions>
+        </v-container>
+      </v-form>
     </v-card>
   </v-dialog>
 </template>

@@ -2,30 +2,42 @@
 import {onMounted, ref, shallowRef} from 'vue'
 import {useDate} from 'vuetify'
 
+import {AppointmentList, ReserveAudit} from '@/services/schedulingService.js'
+import {RoomList} from "@/services/roomService.js";
+
 const adapter = useDate()
 
 const DEFAULT_RECORD = {id: 0, user: {title: '', value: ''}, room: {title: '', value: ''}, startTime: adapter.date(), endTime: adapter.date(), title: '', description: '', participantCount: 2, status: {title: '待审批', value: 'pending'}}
+const DEFAULT_SEARCH = {date: new Date().toISOString().split('T')[0], room: null}
 
 const rows = ref([])
+const room = ref([])
 const record = ref(DEFAULT_RECORD)
+const search = ref(DEFAULT_SEARCH)
 const dialog = shallowRef(false)
 const isEditing = shallowRef(false)
 
 const headers = [
-  {title: '预约用户', key: 'user.value', value: 'user.title', align: 'start'},
-  {title: '预约会议室', key: 'room.value', value: 'room.title'},
-  {title: '预约开始时间', key: 'startTime'},
-  {title: '预约结束时间', key: 'endTime'},
+  {title: '部门', key: 'department.id', value: 'department.title', align: 'start'},
+  {title: '预约会议室', key: 'room.id', value: 'room.title'},
+  {title: '日期', key: 'date'},
+  {title: '开始时间', key: 'startTime'},
+  {title: '结束时间', key: 'endTime'},
   {title: '预约标题', key: 'title', sortable: false},
-  {title: '预计参与人数', key: 'participantCount'},
-  {title: '预约详细描述', key: 'description', align: 'end', sortable: false},
+  {title: '参会人数', key: 'attendeesCount'},
+  {title: '联系人', key: 'contactName', align: 'end', sortable: false},
+  {title: '联系电话', key: 'contactPhone', align: 'end', sortable: false},
   {title: '预约状态', key: 'status.value', value: 'status.title', align: 'end'},
   {title: '操作', key: 'actions', align: 'end', sortable: false},
 ]
 
-onMounted(() => {
-  reset()
-})
+const onSubmit = () => {
+  AppointmentList(search.value).then(response => {
+    rows.value = response.data
+  }).catch(error => {
+    console.error('获取数据失败:', error);
+  })
+}
 
 function add() {
   isEditing.value = false
@@ -33,29 +45,30 @@ function add() {
   dialog.value = true
 }
 
-function edit(id) {
-  isEditing.value = true
-
-  const found = rows.value.find(x => x.id === id)
-
-  record.value = {
-    id: found.id,
-    user: found.user,
-    room: found.room,
-    startTime: found.startTime,
-    endTime: found.endTime,
-    title: found.title,
-    description: found.description,
-    participantCount: found.participantCount,
-    status: found.status,
+function Pass(id) {
+  const params = {
+    id: id,
+    audit: '1'
   }
 
-  dialog.value = true
+  ReserveAudit(params).catch(error => {
+    console.error('审批失败:', error);
+  })
+
+  reset()
 }
 
-function remove(id) {
-  const index = rows.value.findIndex(x => x.id === id)
-  rows.value.splice(index, 1)
+function Reject(id) {
+  const params = {
+    id: id,
+    audit: '2'
+  }
+
+  ReserveAudit(params).catch(error => {
+    console.error('审批失败:', error);
+  })
+
+  reset()
 }
 
 function save() {
@@ -82,39 +95,76 @@ function save() {
 function reset() {
   dialog.value = false
   record.value = DEFAULT_RECORD
-  rows.value = [
-    {id: 1, user: {title: '用户A', value: '1'}, room: {title: '会议室1', value: '1'}, startTime: adapter.date(), endTime: adapter.date(), title: '某某会议1', description: '某某会议', participantCount: 2, status: {title: '待审批', value: 'pending'}},
-    {id: 2, user: {title: '用户B', value: '2'}, room: {title: '会议室2', value: '2'}, startTime: adapter.date(), endTime: adapter.date(), title: '某某会议2', description: '某某会议', participantCount: 2, status: {title: '已批准', value: 'approved'}},
-    {id: 3, user: {title: '用户C', value: '3'}, room: {title: '会议室3', value: '3'}, startTime: adapter.date(), endTime: adapter.date(), title: '某某会议3', description: '某某会议', participantCount: 2, status: {title: '已拒绝', value: 'rejected'}},
-    {id: 4, user: {title: '用户D', value: '4'}, room: {title: '会议室4', value: '4'}, startTime: adapter.date(), endTime: adapter.date(), title: '某某会议4', description: '某某会议', participantCount: 2, status: {title: '已取消', value: 'canceled'}},
-  ]
+  search.value = DEFAULT_SEARCH
+
+  RoomList().then(response => {
+    room.value = response.data
+  }).catch(error => {
+    console.error('获取数据失败:', error);
+  })
+
+  AppointmentList(search.value).then(response => {
+    rows.value = response.data
+  }).catch(error => {
+    console.error('获取数据失败:', error);
+  })
 }
+
+onMounted(() => {
+  reset()
+})
 </script>
 
 <template>
   <v-main>
     <v-container>
-      <v-sheet border rounded>
-        <v-data-table :headers="headers" :hide-default-footer="rows.length < 11" :items="rows">
-          <template v-slot:top>
-            <v-toolbar flat>
-              <v-toolbar-title>
-                预约信息
-              </v-toolbar-title>
+      <v-row>
+        <v-col cols="4" sm="4" xl="2">
+          <v-form v-on:submit.prevent="onSubmit">
+            <v-card prepend-icon="mdi-filter" class="mx-auto" title="筛选条件">
+              <v-card-text>
+                <v-row>
+                  <v-col cols="12">
+                    <v-text-field v-model="search.date" label="日期" type="date" variant="outlined"></v-text-field>
+                  </v-col>
 
-              <v-btn class="text-none" color="primary" prepend-icon="mdi-plus" rounded="lg" slim text="添加会议室" variant="flat" @click="add"/>
-            </v-toolbar>
-          </template>
+                  <v-col cols="12">
+                    <v-select v-model="search.room" :items="room" item-title="title" item-value="id" label="会议室" variant="outlined" prepend-inner-icon="mdi-chair-rolling" return-object></v-select>
+                  </v-col>
+                </v-row>
+              </v-card-text>
 
-          <template v-slot:item.actions="{ item }">
-            <div class="d-flex ga-2 justify-end">
-              <v-icon color="medium-emphasis" icon="mdi-pencil" size="small" @click="edit(item.id)"></v-icon>
+              <v-card-actions>
+                <v-btn class="text-none" color="primary" prepend-icon="mdi-magnify" rounded="lg" text="查询" variant="flat" type="submit" block/>
+              </v-card-actions>
+            </v-card>
+          </v-form>
+        </v-col>
 
-              <v-icon color="medium-emphasis" icon="mdi-delete" size="small" @click="remove(item.id)"></v-icon>
-            </div>
-          </template>
-        </v-data-table>
-      </v-sheet>
+        <v-col cols="8" sm="8" xl="10">
+          <v-sheet border rounded>
+            <v-data-table :headers="headers" :hide-default-footer="rows.length < 11" :items="rows">
+              <template v-slot:top>
+                <v-toolbar flat>
+                  <v-toolbar-title>
+                    预约信息
+                  </v-toolbar-title>
+
+                  <v-btn class="text-none" color="primary" prepend-icon="mdi-plus" rounded="lg" slim text="添加排班" variant="flat" @click="add"/>
+                </v-toolbar>
+              </template>
+
+              <template v-slot:item.actions="{ item }">
+                <div class="d-flex ga-2 justify-end">
+                  <v-icon color="medium-emphasis" icon="mdi-check-bold" size="small" @click="Pass(item.id)"></v-icon>
+
+                  <v-icon color="medium-emphasis" icon="mdi-arrow-u-down-left-bold" size="small" @click="Reject(item.id)"></v-icon>
+                </div>
+              </template>
+            </v-data-table>
+          </v-sheet>
+        </v-col>
+      </v-row>
 
       <v-dialog v-model="dialog" max-width="1024">
         <v-card :title="`${isEditing ? '编辑' : '新增'} 会议室信息`">

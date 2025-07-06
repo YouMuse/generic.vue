@@ -2,7 +2,7 @@
 import {onMounted, ref, shallowRef} from 'vue'
 import {useDate} from 'vuetify'
 import {GetFacilityList} from "@/services/facilityService.js";
-import {RoomList} from "@/services/roomService.js";
+import {DepartmentList} from "@/services/departmentService.js";
 
 const adapter = useDate()
 
@@ -14,12 +14,11 @@ const dialog = shallowRef(false)
 const isEditing = shallowRef(false)
 
 const headers = [
-  {title: '名称', key: 'title'},
-  {title: '类型', key: 'type.value', value: 'type.title'},
-  {title: '所在位置', key: 'location.value', value: 'location.title'},
-  {title: '可容纳的人数', key: 'capacity'},
+  {title: '会议室名称', key: 'title'},
+  {title: '会议室所在位置', key: 'location.value', value: 'location.title'},
+  {title: '会议室可容纳的人数', key: 'capacity'},
   {title: '简介', key: 'description', align: 'end', sortable: false},
-  {title: '状态', key: 'status.value', value: 'status.title', align: 'end'},
+  {title: '会议室状态', key: 'status', align: 'end'},
   {title: '操作', key: 'actions', align: 'end', sortable: false},
 ]
 
@@ -67,7 +66,7 @@ function reset() {
   dialog.value = false
   record.value = DEFAULT_RECORD
 
-  RoomList().then(response => {
+  DepartmentList().then(response => {
     rows.value = response.data
 
     console.log(rows.value)
