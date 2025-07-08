@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import {ref} from 'vue'
 
-import AppointmentRoomList from '@/components/v-card/appointment-room-list.vue'
-import FilterRoomList from '@/components/v-card/filter-room-list.vue'
+import AppointmentRoomList from '@/views/form/appointment-room-list.vue'
+import FilterRoomList from '@/views/form/filter-room-list.vue'
 
 const appointmentRoomListRef = ref()
 

@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import {onMounted, ref, shallowRef} from 'vue'
 
-import {GetAppointmentRoomList, SearchAppointmentRoomList, Reserve} from '@/services/schedulingService.js'
+import {GetSchedulingList, SearchSchedulingList} from '@/services/schedulingService.js'
+import {Reserve} from '@/services/reserveService.js'
 import {DepartmentList} from '@/services/departmentService.js'
 
 interface SearchFormData {
@@ -41,7 +42,7 @@ async function search(formData: SearchFormData) {
     location: formData.location,
   }
 
-  SearchAppointmentRoomList(params).then(response => {
+  SearchSchedulingList(params).then(response => {
     rows.value = response.data
   }).catch(error => {
     console.error('获取数据失败:', error);
@@ -77,7 +78,7 @@ function submit(id: string) {
 function reset() {
   dialog.value = false
 
-  GetAppointmentRoomList().then(response => {
+  GetSchedulingList().then(response => {
     rows.value = response.data
   }).catch(error => {
     console.error('获取数据失败:', error);

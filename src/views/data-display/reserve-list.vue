@@ -2,7 +2,7 @@
 import {onMounted, ref, shallowRef} from 'vue'
 import {useDate} from 'vuetify'
 
-import {AppointmentList, ReserveAudit} from '@/services/schedulingService.js'
+import {SearchReserveList, ReserveAudit} from '@/services/reserveService.js'
 import {RoomList} from "@/services/roomService.js";
 
 const adapter = useDate()
@@ -32,7 +32,7 @@ const headers = [
 ]
 
 const onSubmit = () => {
-  AppointmentList(search.value).then(response => {
+  SearchReserveList(search.value).then(response => {
     rows.value = response.data
   }).catch(error => {
     console.error('获取数据失败:', error);
@@ -103,7 +103,7 @@ function reset() {
     console.error('获取数据失败:', error);
   })
 
-  AppointmentList(search.value).then(response => {
+  SearchReserveList(search.value).then(response => {
     rows.value = response.data
   }).catch(error => {
     console.error('获取数据失败:', error);
