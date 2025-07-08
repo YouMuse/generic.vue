@@ -14,8 +14,6 @@ const rows = ref([])
 const room = ref([])
 const record = ref(DEFAULT_RECORD)
 const search = ref(DEFAULT_SEARCH)
-const dialog = shallowRef(false)
-const isEditing = shallowRef(false)
 
 const headers = [
   {title: '部门', key: 'department.id', value: 'department.title', align: 'start'},
@@ -37,12 +35,6 @@ const onSubmit = () => {
   }).catch(error => {
     console.error('获取数据失败:', error);
   })
-}
-
-function add() {
-  isEditing.value = false
-  record.value = DEFAULT_RECORD
-  dialog.value = true
 }
 
 function Pass(id) {
@@ -71,29 +63,7 @@ function Reject(id) {
   reset()
 }
 
-function save() {
-  if (isEditing.value) {
-    const index = rows.value.findIndex(x => x.id === record.value.id)
-    rows.value[index] = record.value
-  } else {
-    rows.value.push({
-      id: rows.value.length + 1,
-      user: record.value.user,
-      room: record.value.room,
-      startTime: record.value.startTime,
-      endTime: record.value.endTime,
-      title: record.value.title,
-      description: record.value.description,
-      participantCount: record.value.participantCount,
-      status: record.value.status,
-    })
-  }
-
-  dialog.value = false
-}
-
 function reset() {
-  dialog.value = false
   record.value = DEFAULT_RECORD
   search.value = DEFAULT_SEARCH
 
@@ -117,9 +87,9 @@ onMounted(() => {
 
 <template>
   <v-main>
-    <v-container>
+    <v-container fluid>
       <v-row>
-        <v-col cols="4" sm="4" xl="2">
+        <v-col cols="12">
           <v-form v-on:submit.prevent="onSubmit">
             <v-card prepend-icon="mdi-filter" class="mx-auto" title="筛选条件">
               <v-card-text>
@@ -141,7 +111,7 @@ onMounted(() => {
           </v-form>
         </v-col>
 
-        <v-col cols="8" sm="8" xl="10">
+        <v-col cols="12">
           <v-sheet border rounded>
             <v-data-table :headers="headers" :hide-default-footer="rows.length < 11" :items="rows">
               <template v-slot:top>
@@ -149,8 +119,6 @@ onMounted(() => {
                   <v-toolbar-title>
                     预约信息
                   </v-toolbar-title>
-
-                  <v-btn class="text-none" color="primary" prepend-icon="mdi-plus" rounded="lg" slim text="添加排班" variant="flat" @click="add"/>
                 </v-toolbar>
               </template>
 
@@ -165,50 +133,6 @@ onMounted(() => {
           </v-sheet>
         </v-col>
       </v-row>
-
-      <v-dialog v-model="dialog" max-width="1024">
-        <v-card :title="`${isEditing ? '编辑' : '新增'} 会议室信息`">
-          <template v-slot:text>
-            <v-row>
-              <v-col cols="12" md="6">
-                <v-text-field v-model="record.number" label="会议室编号"></v-text-field>
-              </v-col>
-
-              <v-col cols="12" md="6">
-                <v-text-field v-model="record.name" label="会议室名称"></v-text-field>
-              </v-col>
-
-              <v-col cols="12" md="6">
-                <v-select v-model="record.status" :items="['available', 'unavailable', 'maintenance']" label="会议室状态"></v-select>
-              </v-col>
-
-              <v-col cols="12" md="6">
-                <v-number-input v-model="record.capacity" :min="1" label="会议室可容纳的人数"></v-number-input>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col cols="12">
-                <v-text-field v-model="record.number" label="会议室所在位置"></v-text-field>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col cols="12">
-                <v-text-field v-model="record.description" label="简介"></v-text-field>
-              </v-col>
-            </v-row>
-          </template>
-
-          <v-divider></v-divider>
-
-          <v-card-actions class="bg-surface-light">
-            <v-btn text="取消" variant="plain" @click="dialog = false"></v-btn>
-
-            <v-spacer></v-spacer>
-
-            <v-btn text="保存" @click="save"></v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
     </v-container>
   </v-main>
 </template>

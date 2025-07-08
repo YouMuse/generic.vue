@@ -28,14 +28,14 @@ export function installRouter(app) {
             path: "/",
             component: () => import('@/layouts/inbox.vue'),
             meta: {
-                title: 'Home'
+                title: '排班管理'
             },
             children: [
                 {
                     path: "/",
-                    component: () => import('@/views/dashboard.vue'),
+                    component: () => import('@/views/data-display/scheduling-list.vue'),
                     meta: {
-                        title: 'Dashboard'
+                        title: '排班管理'
                     }
                 }
             ]
@@ -84,6 +84,22 @@ export function installRouter(app) {
                     component: () => import('@/views/data-display/facility-list.vue'),
                     meta: {
                         title: '设施管理'
+                    }
+                }
+            ]
+        },
+        {
+            path: "/scheduling",
+            component: () => import('@/layouts/inbox.vue'),
+            meta: {
+                title: '排班管理'
+            },
+            children: [
+                {
+                    path: "/scheduling",
+                    component: () => import('@/views/data-display/scheduling-list.vue'),
+                    meta: {
+                        title: '排班管理'
                     }
                 }
             ]

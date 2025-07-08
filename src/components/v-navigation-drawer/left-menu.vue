@@ -14,14 +14,14 @@ const userInfo = {
 }
 
 const menu = [
-  {id: 1, text: '仪表板', icon: 'mdi-home', link: '/'},
   {id: 2, text: '用户管理', icon: 'mdi-account-multiple', link: '/user'},
-  {id: 3, text: '会议室管理', icon: 'mdi-star', link: '/room'},
-  {id: 4, text: '设施管理', icon: 'mdi-history', link: '/facility'},
+  {id: 3, text: '会议室管理', icon: 'mdi-home-circle', link: '/room'},
+  {id: 4, text: '设施管理', icon: 'mdi-usb-flash-drive', link: '/facility'},
   {id: 5, text: '预约管理', icon: 'mdi-check-circle', link: '/reserve'},
+  {id: 5, text: '排班管理', icon: 'mdi-invoice-clock', link: '/scheduling'},
+  {id: 8, text: '基础数据维护', icon: 'mdi-cloud-upload', link: '/appointment'},
   {id: 6, text: '测试', icon: 'mdi-upload', link: '/test'},
   {id: 7, text: '会议室预约', icon: 'mdi-cloud-upload', link: '/appointment'},
-  {id: 8, text: '基础数据维护', icon: 'mdi-cloud-upload', link: '/appointment'},
 ]
 </script>
 
