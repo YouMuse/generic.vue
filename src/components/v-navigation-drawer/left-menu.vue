@@ -14,7 +14,6 @@ const userInfo = {
 }
 
 const menu = [
-  {id: 2, text: '用户管理', icon: 'mdi-account-multiple', link: '/user'},
   {id: 3, text: '会议室管理', icon: 'mdi-home-circle', link: '/room'},
   {id: 4, text: '设施管理', icon: 'mdi-usb-flash-drive', link: '/facility'},
   {id: 5, text: '预约管理', icon: 'mdi-check-circle', link: '/reserve'},

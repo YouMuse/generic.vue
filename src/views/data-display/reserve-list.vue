@@ -94,18 +94,18 @@ onMounted(() => {
             <v-card prepend-icon="mdi-filter" class="mx-auto" title="筛选条件">
               <v-card-text>
                 <v-row>
-                  <v-col cols="12">
+                  <v-col cols="3">
                     <v-text-field v-model="search.date" label="日期" type="date" variant="outlined"></v-text-field>
                   </v-col>
 
-                  <v-col cols="12">
+                  <v-col cols="3">
                     <v-select v-model="search.room" :items="room" item-title="title" item-value="id" label="会议室" variant="outlined" prepend-inner-icon="mdi-chair-rolling" return-object></v-select>
                   </v-col>
                 </v-row>
               </v-card-text>
 
               <v-card-actions>
-                <v-btn class="text-none" color="primary" prepend-icon="mdi-magnify" rounded="lg" text="查询" variant="flat" type="submit" block/>
+                <v-btn class="text-none" color="primary" prepend-icon="mdi-magnify" rounded="lg" text="查询" variant="flat" type="submit"/>
               </v-card-actions>
             </v-card>
           </v-form>

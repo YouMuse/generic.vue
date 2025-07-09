@@ -87,28 +87,53 @@ function reset() {
 
 <template>
   <v-main>
-    <v-container>
-      <v-sheet border rounded>
-        <v-data-table :headers="headers" :hide-default-footer="rows.length < 11" :items="rows">
-          <template v-slot:top>
-            <v-toolbar flat>
-              <v-toolbar-title>
-                用户列表
-              </v-toolbar-title>
+    <v-container fluid>
+      <v-row>
+        <v-col cols="12">
+          <v-form v-on:submit.prevent="onSubmit">
+            <v-card prepend-icon="mdi-filter" class="mx-auto" title="筛选条件">
+              <v-card-text>
+                <v-row>
+                  <v-col cols="3">
+                    <v-text-field v-model="search.date" label="日期" type="date" variant="outlined"></v-text-field>
+                  </v-col>
 
-              <v-btn class="text-none" color="primary" prepend-icon="mdi-plus" rounded="lg" slim text="添加用户" variant="flat" @click="add"/>
-            </v-toolbar>
-          </template>
+                  <v-col cols="3">
+                    <v-select v-model="search.room" :items="room" item-title="title" item-value="id" label="会议室" variant="outlined" prepend-inner-icon="mdi-chair-rolling" return-object></v-select>
+                  </v-col>
+                </v-row>
+              </v-card-text>
 
-          <template v-slot:item.actions="{ item }">
-            <div class="d-flex ga-2 justify-end">
-              <v-icon color="medium-emphasis" icon="mdi-pencil" size="small" @click="edit(item.id)"></v-icon>
+              <v-card-actions>
+                <v-btn class="text-none" color="primary" prepend-icon="mdi-magnify" rounded="lg" text="查询" variant="flat" type="submit"/>
+              </v-card-actions>
+            </v-card>
+          </v-form>
+        </v-col>
+        <v-col cols="12">
+          <v-sheet border rounded>
+            <v-data-table :headers="headers" :hide-default-footer="rows.length < 11" :items="rows">
+              <template v-slot:top>
+                <v-toolbar flat>
+                  <v-toolbar-title>
+                    用户列表
+                  </v-toolbar-title>
 
-              <v-icon color="medium-emphasis" icon="mdi-delete" size="small" @click="remove(item.id)"></v-icon>
-            </div>
-          </template>
-        </v-data-table>
-      </v-sheet>
+                  <v-btn class="text-none" color="primary" prepend-icon="mdi-plus" rounded="lg" slim text="添加用户" variant="flat" @click="add"/>
+                </v-toolbar>
+              </template>
+
+              <template v-slot:item.actions="{ item }">
+                <div class="d-flex ga-2 justify-end">
+                  <v-icon color="medium-emphasis" icon="mdi-pencil" size="small" @click="edit(item.id)"></v-icon>
+
+                  <v-icon color="medium-emphasis" icon="mdi-delete" size="small" @click="remove(item.id)"></v-icon>
+                </div>
+              </template>
+            </v-data-table>
+          </v-sheet>
+        </v-col>
+      </v-row>
 
       <v-dialog v-model="dialog" max-width="1024">
         <v-card :title="`${isEditing ? '编辑' : '新增'} 用户信息`">
