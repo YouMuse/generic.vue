@@ -1,38 +1,40 @@
-<script setup>
+<script setup lang="ts">
 import {onMounted, ref, shallowRef} from 'vue'
-import {useDate} from 'vuetify'
 
-const adapter = useDate()
+import {RoomList} from "@/services/roomService.js";
+import {QuerySchedulingList} from '@/services/schedulingService.js'
 
-const DEFAULT_RECORD = {id: 0, name: '', email: '', nickName: '', phone: '', department: {title: '', value: ''}, role: 'user', status: '1'}
+const DEFAULT_RECORD = {id: 0, date: new Date().toISOString().split('T')[0], startTime: '09:00', endTime: '18:00', capacity: 2, facility: null, location: null}
+
+const DEFAULT_SEARCH = {date: new Date().toISOString().split('T')[0], room: null}
 
 const rows = ref([])
+const room = ref([])
 const record = ref(DEFAULT_RECORD)
+const search = ref(DEFAULT_SEARCH)
 const dialog = shallowRef(false)
 const isEditing = shallowRef(false)
 
 const headers = [
-  {title: '用户名', key: 'name'},
+  {title: '会议室', key: 'name'},
   {title: '电话号码', key: 'phone', align: 'end'},
   {title: '邮箱', key: 'email', sortable: false},
   {title: '昵称', key: 'nickName'},
   {title: '所属科室', key: 'department.value', value: 'department.title', align: 'end'},
   {title: '角色', key: 'role', align: 'end'},
-  {title: '状态', key: 'status', align: 'end'},
+  {title: '状态', key: 'status.value', value: 'status.title', align: 'end'},
   {title: '操作', key: 'actions', align: 'end', sortable: false},
 ]
 
-const departments = ref([])
+const onSubmit = () => {
+  console.log(JSON.stringify(search.value))
 
-departments.value = [
-  {title: 'A科', value: 'A'},
-  {title: 'B科', value: 'B'},
-  {title: 'C科', value: 'C'},
-]
-
-onMounted(() => {
-  reset()
-})
+  QuerySchedulingList(search.value).then(response => {
+    rows.value = response.data
+  }).catch(error => {
+    console.error('获取数据失败:', error);
+  })
+}
 
 function add() {
   isEditing.value = false
@@ -78,11 +80,23 @@ function save() {
 function reset() {
   dialog.value = false
   record.value = DEFAULT_RECORD
-  rows.value = [
-    {id: 1, name: 'Harper Lee', email: 'Fiction', nickName: 'Fiction', phone: 'Fiction', department: {id: 1, title: 'A科', value: 'A'}, role: 'Fiction', status: '281'},
-    {id: 2, name: 'Harper Lee', email: 'Fiction', nickName: 'Fiction', phone: 'Fiction', department: {id: 2, title: 'B科', value: 'B'}, role: 'Fiction', status: '281'},
-  ]
+
+  RoomList().then(response => {
+    room.value = response.data
+  }).catch(error => {
+    console.error('获取数据失败:', error);
+  })
+
+  QuerySchedulingList(search.value).then(response => {
+    rows.value = response.data
+  }).catch(error => {
+    console.error('获取数据失败:', error);
+  })
 }
+
+onMounted(() => {
+  reset()
+})
 </script>
 
 <template>
@@ -110,16 +124,17 @@ function reset() {
             </v-card>
           </v-form>
         </v-col>
+
         <v-col cols="12">
           <v-sheet border rounded>
             <v-data-table :headers="headers" :hide-default-footer="rows.length < 11" :items="rows">
               <template v-slot:top>
                 <v-toolbar flat>
                   <v-toolbar-title>
-                    用户列表
+                    排班列表
                   </v-toolbar-title>
 
-                  <v-btn class="text-none" color="primary" prepend-icon="mdi-plus" rounded="lg" slim text="添加用户" variant="flat" @click="add"/>
+                  <v-btn class="text-none" color="primary" prepend-icon="mdi-plus" rounded="lg" slim text="添加排班" variant="flat" @click="add"/>
                 </v-toolbar>
               </template>
 
@@ -136,7 +151,7 @@ function reset() {
       </v-row>
 
       <v-dialog v-model="dialog" max-width="1024">
-        <v-card :title="`${isEditing ? '编辑' : '新增'} 用户信息`">
+        <v-card :title="`${isEditing ? '编辑' : '新增'} 排班信息`">
           <template v-slot:text>
             <v-row>
               <v-col cols="12" md="6">

@@ -27,3 +27,17 @@ export const SearchSchedulingList = async (params) => {
         return null;
     }
 }
+
+// 查询会议室
+export const QuerySchedulingList = async (params) => {
+    try {
+        const response = await instance.post('Scheduling/QuerySchedulingList', params);
+        if (!response?.data || response.data.code !== 1) {
+            return null;
+        }
+        return response.data;
+    } catch (error) {
+        console.error('搜索会议室失败：', error);
+        return null;
+    }
+}
