@@ -12,10 +12,10 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
     config => {
-        // const store
-        //
-        // config.headers.Authorization = 'Bearer ' + store.authorization.token
-
+        const token = localStorage.getItem('token')
+        if (token) {
+            config.headers.Authorization = 'Bearer ' + token
+        }
         return config
     },
     error => {
@@ -29,6 +29,9 @@ instance.interceptors.response.use(
     },
     error => {
         if (error.response && error.response.status === 401) {
+            localStorage.removeItem('token')
+            window.location.href = '/login'
+
             console.error('Unauthorized, redirecting to login...');
         }
         return Promise.reject(error);

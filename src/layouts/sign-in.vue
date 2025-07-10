@@ -1,3 +1,24 @@
+<script setup lang="ts">
+import {ref} from 'vue'
+import {useRouter} from 'vue-router'
+import {login} from '@/services/authorizationService'
+
+const router = useRouter()
+const loginForm = ref({
+  username: '',
+  password: ''
+})
+
+function handleLogin() {
+  login(loginForm.value).then(response => {
+    localStorage.setItem('token', response.data.ticket)
+    router.push('/dashboard')
+  }).catch(error => {
+    console.error('登录失败:', error);
+  })
+}
+</script>
+
 <template>
   <v-img class="fill-height" src="/src/assets/sea.jpg" aspect-ratio="16/9" cover>
     <v-container>
@@ -46,5 +67,3 @@
     </v-container>
   </v-img>
 </template>
-<script setup lang="ts">
-</script>

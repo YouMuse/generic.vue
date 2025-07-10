@@ -60,7 +60,8 @@ export function installRouter(app) {
             path: "/room",
             component: () => import('@/layouts/inbox.vue'),
             meta: {
-                title: '会议室管理'
+                title: '会议室管理',
+                requiresAuth: true
             },
             children: [
                 {
@@ -166,7 +167,16 @@ export function installRouter(app) {
         if (to.meta.title) {
             document.title = to.meta.title;
         }
-        next();
+
+        const isAuthenticated = localStorage.getItem('token')
+
+        if (to.meta.requiresAuth && !isAuthenticated) {
+            next('/login')
+        } else if (to.path === '/login' && isAuthenticated) {
+            next('/dashboard')
+        } else {
+            next()
+        }
     });
 
     app.use(router)
