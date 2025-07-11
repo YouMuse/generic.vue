@@ -4,7 +4,7 @@ import {onMounted, ref, shallowRef} from 'vue'
 import {RoomList} from "@/services/roomService.js";
 import {QuerySchedulingList} from '@/services/schedulingService.js'
 
-const DEFAULT_RECORD = {id: 0, date: new Date().toISOString().split('T')[0], startTime: '09:00', endTime: '18:00', capacity: 2, facility: null, location: null}
+const DEFAULT_RECORD = {date: new Date().toISOString().split('T')[0], startTime: '09:00', endTime: '18:00', room: null}
 
 const DEFAULT_SEARCH = {date: new Date().toISOString().split('T')[0], room: null}
 
@@ -27,8 +27,6 @@ const headers = [
 ]
 
 const onSubmit = () => {
-  console.log(JSON.stringify(search.value))
-
   QuerySchedulingList(search.value).then(response => {
     rows.value = response.data
   }).catch(error => {
@@ -154,29 +152,21 @@ onMounted(() => {
         <v-card :title="`${isEditing ? '编辑' : '新增'} 排班信息`">
           <template v-slot:text>
             <v-row>
-              <v-col cols="12" md="6">
-                <v-text-field v-model="record.name" label="用户名"></v-text-field>
+              <v-col cols="6">
+                <v-text-field v-model="record.date" label="日期" type="date" variant="outlined"></v-text-field>
               </v-col>
 
-              <v-col cols="12" md="6">
-                <v-text-field v-model="record.nickName" label="昵称"></v-text-field>
-              </v-col>
 
-              <v-col cols="12" md="6">
-                <v-text-field v-model="record.phone" label="电话号码"></v-text-field>
-              </v-col>
-
-              <v-col cols="12" md="6">
-                <v-text-field v-model="record.email" label="邮箱"></v-text-field>
+              <v-col cols="6">
+                <v-select v-model="record.room" :items="room" item-title="title" item-value="id" return-object label="会议室"></v-select>
               </v-col>
             </v-row>
             <v-row>
-              <v-col cols="12" md="6">
-                <v-select v-model="record.department" :items="departments" item-title="title" item-value="value" return-object label="所属科室"></v-select>
+              <v-col cols="6">
+                <v-text-field v-model="record.startTime" label="开始时间" type="time" variant="outlined"></v-text-field>
               </v-col>
-
-              <v-col cols="12" md="6">
-                <v-select v-model="record.status" :items="['available', 'unavailable', 'maintenance']" label="状态"></v-select>
+              <v-col cols="6">
+                <v-text-field v-model="record.endTime" label="结束时间" type="time" variant="outlined"></v-text-field>
               </v-col>
             </v-row>
           </template>

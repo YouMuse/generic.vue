@@ -14,7 +14,7 @@ export function installRouter(app) {
             path: "/login",
             component: () => import('@/layouts/sign-in.vue'),
             meta: {
-                title: 'Login'
+                title: '登录'
             }
         },
         {
@@ -26,32 +26,14 @@ export function installRouter(app) {
     const routeArray = [
         {
             path: "/",
-            component: () => import('@/layouts/inbox.vue'),
-            meta: {
-                title: '排班管理'
-            },
+            component: () => import('@/layouts/constrained.vue'),
+            meta: {},
             children: [
                 {
                     path: "/",
-                    component: () => import('@/views/data-display/scheduling-list.vue'),
+                    component: () => import('@/views/form/appointment.vue'),
                     meta: {
-                        title: '排班管理'
-                    }
-                }
-            ]
-        },
-        {
-            path: "/user",
-            component: () => import('@/layouts/inbox.vue'),
-            meta: {
-                title: '用户管理'
-            },
-            children: [
-                {
-                    path: "/user",
-                    component: () => import('@/views/data-display/user-list.vue'),
-                    meta: {
-                        title: '用户管理'
+                        title: '预约会议'
                     }
                 }
             ]
@@ -60,7 +42,6 @@ export function installRouter(app) {
             path: "/room",
             component: () => import('@/layouts/inbox.vue'),
             meta: {
-                title: '会议室管理',
                 requiresAuth: true
             },
             children: [
@@ -77,7 +58,7 @@ export function installRouter(app) {
             path: "/facility",
             component: () => import('@/layouts/inbox.vue'),
             meta: {
-                title: '设施管理'
+                requiresAuth: true
             },
             children: [
                 {
@@ -93,7 +74,7 @@ export function installRouter(app) {
             path: "/scheduling",
             component: () => import('@/layouts/inbox.vue'),
             meta: {
-                title: '排班管理'
+                requiresAuth: true
             },
             children: [
                 {
@@ -109,7 +90,7 @@ export function installRouter(app) {
             path: "/reserve",
             component: () => import('@/layouts/inbox.vue'),
             meta: {
-                title: '预约管理'
+                requiresAuth: true
             },
             children: [
                 {
@@ -122,33 +103,17 @@ export function installRouter(app) {
             ]
         },
         {
-            path: "/appointment",
-            component: () => import('@/layouts/constrained.vue'),
+            path: "/user",
+            component: () => import('@/layouts/inbox.vue'),
             meta: {
-                title: '预约会议'
+                requiresAuth: true
             },
             children: [
                 {
-                    path: "/appointment",
-                    component: () => import('@/views/form/appointment.vue'),
+                    path: "/user",
+                    component: () => import('@/views/data-display/user-list.vue'),
                     meta: {
-                        title: '预约会议'
-                    }
-                }
-            ]
-        },
-        {
-            path: "/test",
-            component: () => import('@/layouts/constrained.vue'),
-            meta: {
-                title: '测试'
-            },
-            children: [
-                {
-                    path: "/test",
-                    component: () => import('@/views/form/Test.vue'),
-                    meta: {
-                        title: '测试'
+                        title: '用户管理'
                     }
                 }
             ]
@@ -173,7 +138,7 @@ export function installRouter(app) {
         if (to.meta.requiresAuth && !isAuthenticated) {
             next('/login')
         } else if (to.path === '/login' && isAuthenticated) {
-            next('/dashboard')
+            next('/')
         } else {
             next()
         }

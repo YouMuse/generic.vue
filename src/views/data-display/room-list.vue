@@ -69,8 +69,6 @@ function reset() {
 
   RoomList().then(response => {
     rows.value = response.data
-
-    console.log(rows.value)
   }).catch(error => {
     console.error('获取数据失败:', error);
   })
