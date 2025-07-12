@@ -62,7 +62,7 @@ export function installRouter(app) {
             },
             children: [
                 {
-                    path: "/table",
+                    path: "/facility",
                     component: () => import('@/views/data-display/facility-list.vue'),
                     meta: {
                         title: '设施管理'

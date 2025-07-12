@@ -1,15 +1,17 @@
-<script setup>
+<script setup lang="ts">
 import {onMounted, ref, shallowRef} from 'vue'
-import {useDate} from 'vuetify'
-import {GetFacilityList} from "@/services/facilityService.js";
-import {RoomList} from "@/services/roomService.js";
 
-const adapter = useDate()
+import {RoomList,AddRoom,SetRoomStatus} from "@/services/roomService.js";
+import {DictionaryList} from "@/services/dictionaryService.js";
+import {AddScheduling, SetSchedulingStatus} from "@/services/schedulingService.js";
 
-const DEFAULT_RECORD = {id: 0, number: '', name: '', location: '', capacity: 0, description: '', status: ''}
+
+const DEFAULT_RECORD = {name: null, location: null, capacity: 2, type: null}
 
 const rows = ref([])
 const record = ref(DEFAULT_RECORD)
+const location = ref([])
+const type = ref([])
 const dialog = shallowRef(false)
 const isEditing = shallowRef(false)
 
@@ -29,36 +31,38 @@ function add() {
   dialog.value = true
 }
 
-function edit(id) {
-  isEditing.value = true
+function enable(id: number) {
+  const params = {
+    id: id,
+    status: '1'
+  }
 
-  const found = rows.value.find(x => x.id === id)
-
-  // record.value = {id: found.id, number: found.number, name: found.name, location: found.location, capacity: found.capacity, description: found.description, status: found.status}
-
-  dialog.value = true
+  SetRoomStatus(params).then(response => {
+    reset()
+  }).catch(error => {
+    console.error('获取数据失败:', error);
+  })
 }
 
-function remove(id) {
-  const index = rows.value.findIndex(x => x.id === id)
-  rows.value.splice(index, 1)
+function disable(id: number) {
+  const params = {
+    id: id,
+    status: '0'
+  }
+
+  SetRoomStatus(params).then(response => {
+    reset()
+  }).catch(error => {
+    console.error('获取数据失败:', error);
+  })
 }
 
 function save() {
-  if (isEditing.value) {
-    const index = rows.value.findIndex(x => x.id === record.value.id)
-    rows.value[index] = record.value
-  } else {
-    rows.value.push({
-      id: rows.value.length + 1,
-      number: record.value.number,
-      name: record.value.name,
-      location: record.value.location,
-      capacity: record.value.capacity,
-      description: record.value.description,
-      status: record.value.status,
-    })
-  }
+  AddRoom(record.value).then(response => {
+    reset()
+  }).catch(error => {
+    console.error('获取数据失败:', error);
+  })
 
   dialog.value = false
 }
@@ -72,6 +76,18 @@ function reset() {
   }).catch(error => {
     console.error('获取数据失败:', error);
   })
+
+  DictionaryList({typeCode: 'ROOM_LOCATION'}).then(response => {
+    location.value = response.data
+  }).catch(error => {
+    console.error('获取数据失败:', error);
+  })
+
+  DictionaryList({typeCode: 'ROOM_TYPE'}).then(response => {
+    type.value = response.data
+  }).catch(error => {
+    console.error('获取数据失败:', error);
+  })
 }
 
 onMounted(() => {
@@ -81,7 +97,7 @@ onMounted(() => {
 
 <template>
   <v-main>
-    <v-container>
+    <v-container fluid>
       <v-sheet border rounded>
         <v-data-table :headers="headers" :hide-default-footer="rows.length < 11" :items="rows" items-per-page="12">
           <template v-slot:top>
@@ -96,37 +112,32 @@ onMounted(() => {
 
           <template v-slot:item.actions="{ item }">
             <div class="d-flex ga-2 justify-end">
-              <v-icon color="medium-emphasis" icon="mdi-pencil" size="small" @click="edit(item.id)"></v-icon>
+              <v-icon color="medium-emphasis" icon="mdi-restart" size="small" @click="enable(item.id)"></v-icon>
 
-              <v-icon color="medium-emphasis" icon="mdi-delete" size="small" @click="remove(item.id)"></v-icon>
+              <v-icon color="medium-emphasis" icon="mdi-close" size="small" @click="disable(item.id)"></v-icon>
             </div>
           </template>
         </v-data-table>
       </v-sheet>
 
       <v-dialog v-model="dialog" max-width="1024">
-        <v-card :title="`${isEditing ? '编辑' : '新增'} 会议室信息`">
+        <v-card title="新增会议室信息">
           <template v-slot:text>
             <v-row>
-              <v-col cols="12" md="6">
-                <v-text-field v-model="record.number" label="会议室编号"></v-text-field>
-              </v-col>
-
-              <v-col cols="12" md="6">
+              <v-col cols="6">
                 <v-text-field v-model="record.name" label="会议室名称"></v-text-field>
               </v-col>
 
-              <v-col cols="12" md="6">
-                <v-select v-model="record.status" :items="['available', 'unavailable', 'maintenance']" label="会议室状态"></v-select>
-              </v-col>
-
-              <v-col cols="12" md="6">
+              <v-col cols="6">
                 <v-number-input v-model="record.capacity" :min="1" label="会议室可容纳的人数"></v-number-input>
               </v-col>
             </v-row>
             <v-row>
-              <v-col cols="12">
-                <v-text-field v-model="record.number" label="会议室所在位置"></v-text-field>
+              <v-col cols="6">
+                <v-select v-model="record.location" :items="location" item-title="title" item-value="value" label="会议室所在位置" variant="outlined" prepend-inner-icon="mdi-map-marker" return-object></v-select>
+              </v-col>
+              <v-col cols="6">
+                <v-select v-model="record.type" :items="type" item-title="title" item-value="value" label="会议室类型" variant="outlined" prepend-inner-icon="mdi-map-marker" return-object></v-select>
               </v-col>
             </v-row>
             <v-row>

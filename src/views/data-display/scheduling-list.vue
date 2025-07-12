@@ -2,7 +2,7 @@
 import {onMounted, ref, shallowRef} from 'vue'
 
 import {RoomList} from "@/services/roomService.js";
-import {QuerySchedulingList} from '@/services/schedulingService.js'
+import {QuerySchedulingList, AddScheduling, SetSchedulingStatus} from '@/services/schedulingService.js'
 
 const DEFAULT_RECORD = {date: new Date().toISOString().split('T')[0], startTime: '09:00', endTime: '18:00', room: null}
 
@@ -13,15 +13,13 @@ const room = ref([])
 const record = ref(DEFAULT_RECORD)
 const search = ref(DEFAULT_SEARCH)
 const dialog = shallowRef(false)
-const isEditing = shallowRef(false)
 
 const headers = [
   {title: '会议室', key: 'name'},
-  {title: '电话号码', key: 'phone', align: 'end'},
-  {title: '邮箱', key: 'email', sortable: false},
-  {title: '昵称', key: 'nickName'},
-  {title: '所属科室', key: 'department.value', value: 'department.title', align: 'end'},
-  {title: '角色', key: 'role', align: 'end'},
+  {title: '位置', key: 'location.value', value: 'location.title', align: 'end'},
+  {title: '生效日期', key: 'date', sortable: false},
+  {title: '开始时间', key: 'time.startTime'},
+  {title: '结束时间', key: 'time.endTime'},
   {title: '状态', key: 'status.value', value: 'status.title', align: 'end'},
   {title: '操作', key: 'actions', align: 'end', sortable: false},
 ]
@@ -34,43 +32,47 @@ const onSubmit = () => {
   })
 }
 
+function required(v: any) {
+  return !!v || '必填字段'
+}
+
 function add() {
-  isEditing.value = false
   record.value = DEFAULT_RECORD
   dialog.value = true
 }
 
-function edit(id) {
-  isEditing.value = true
+function enable(id: number) {
+  const params = {
+    id: id,
+    status: '1'
+  }
 
-  const found = rows.value.find(x => x.id === id)
-
-  record.value = {id: found.id, name: found.name, email: found.email, nickName: found.nickName, phone: found.phone, department: found.department, role: found.role, status: found.status}
-
-  dialog.value = true
+  SetSchedulingStatus(params).then(response => {
+    reset()
+  }).catch(error => {
+    console.error('获取数据失败:', error);
+  })
 }
 
-function remove(id) {
-  const index = rows.value.findIndex(x => x.id === id)
-  rows.value.splice(index, 1)
+function disable(id: number) {
+  const params = {
+    id: id,
+    status: '0'
+  }
+
+  SetSchedulingStatus(params).then(response => {
+    reset()
+  }).catch(error => {
+    console.error('获取数据失败:', error);
+  })
 }
 
 function save() {
-  if (isEditing.value) {
-    const index = rows.value.findIndex(x => x.id === record.value.id)
-    rows.value[index] = record.value
-  } else {
-    rows.value.push({
-      id: rows.value.length + 1,
-      name: record.value.name,
-      email: record.value.email,
-      nickName: record.value.nickName,
-      phone: record.value.phone,
-      department: record.value.department,
-      role: record.value.role,
-      status: record.value.status,
-    })
-  }
+  AddScheduling(record.value).then(response => {
+    reset()
+  }).catch(error => {
+    console.error('获取数据失败:', error);
+  })
 
   dialog.value = false
 }
@@ -138,9 +140,9 @@ onMounted(() => {
 
               <template v-slot:item.actions="{ item }">
                 <div class="d-flex ga-2 justify-end">
-                  <v-icon color="medium-emphasis" icon="mdi-pencil" size="small" @click="edit(item.id)"></v-icon>
+                  <v-icon color="medium-emphasis" icon="mdi-restart" size="small" @click="enable(item.id)"></v-icon>
 
-                  <v-icon color="medium-emphasis" icon="mdi-delete" size="small" @click="remove(item.id)"></v-icon>
+                  <v-icon color="medium-emphasis" icon="mdi-close" size="small" @click="disable(item.id)"></v-icon>
                 </div>
               </template>
             </v-data-table>
@@ -149,7 +151,7 @@ onMounted(() => {
       </v-row>
 
       <v-dialog v-model="dialog" max-width="1024">
-        <v-card :title="`${isEditing ? '编辑' : '新增'} 排班信息`">
+        <v-card title="新增排班信息">
           <template v-slot:text>
             <v-row>
               <v-col cols="6">
@@ -158,7 +160,7 @@ onMounted(() => {
 
 
               <v-col cols="6">
-                <v-select v-model="record.room" :items="room" item-title="title" item-value="id" return-object label="会议室"></v-select>
+                <v-select v-model="record.room" :items="room" item-title="title" item-value="id" :rules="[required]" return-object label="会议室"></v-select>
               </v-col>
             </v-row>
             <v-row>

@@ -32,19 +32,19 @@ function onSubmit() {
               <v-card-item>
                 <v-card-title class="text-center">
                   <h2 class="text-h4 black--text font-weight-bold">
-                    Sign in to our platform
+                    登录后台
                   </h2>
                 </v-card-title>
               </v-card-item>
               <v-card-text>
                 <v-row justify="center">
                   <v-col cols="12" md="10">
-                    <v-text-field v-model="record.username" solo flat outlined prepend-inner-icon="mdi-account-outline" hide-details label="Enter Username"></v-text-field>
+                    <v-text-field v-model="record.username" solo flat outlined prepend-inner-icon="mdi-account-outline" hide-details label="请输入用户名"></v-text-field>
                   </v-col>
                 </v-row>
                 <v-row justify="center">
                   <v-col cols="12" md="10">
-                    <v-text-field v-model="record.password" solo flat outlined prepend-inner-icon="mdi-lock-open" hide-details class="mt-6" label="Password"></v-text-field>
+                    <v-text-field v-model="record.password" solo flat outlined type="password" prepend-inner-icon="mdi-lock-open" hide-details class="mt-6" label="请输入密码"></v-text-field>
                   </v-col>
                 </v-row>
                 <v-row justify="center">

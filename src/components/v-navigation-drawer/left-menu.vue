@@ -3,7 +3,7 @@ import {useRouter} from 'vue-router'
 
 const systemInfo = {
   name: '会议室预约管理系统',
-  version: '1.0'
+  version: '1.0(alpha)'
 }
 
 const userInfo = {
@@ -17,10 +17,8 @@ const userInfo = {
 
 const menu = [
   {id: 3, text: '会议室管理', icon: 'mdi-home-circle', link: '/room'},
-  {id: 4, text: '设施管理', icon: 'mdi-usb-flash-drive', link: '/facility'},
   {id: 5, text: '排班管理', icon: 'mdi-invoice-clock', link: '/scheduling'},
   {id: 5, text: '预约管理', icon: 'mdi-check-circle', link: '/reserve'},
-  {id: 8, text: '基础数据维护', icon: 'mdi-cloud-upload', link: '/'},
 ]
 
 const router = useRouter()
@@ -35,10 +33,6 @@ function signOut() {
 <template>
   <v-navigation-drawer permanent>
     <v-card variant="text" v-bind:title="systemInfo.name" v-bind:subtitle="systemInfo.version"></v-card>
-
-    <v-list>
-      <v-list-item v-bind:prepend-avatar="userInfo.avatar" v-bind:subtitle="userInfo.email" v-bind:title="userInfo.name"></v-list-item>
-    </v-list>
 
     <v-divider></v-divider>
 

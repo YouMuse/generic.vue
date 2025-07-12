@@ -1,6 +1,6 @@
 import instance from '@/plugins/axios.js'
 
-// 获取会议室列表
+// 获取排班列表
 export const GetSchedulingList = async () => {
     try {
         const response = await instance.get('Scheduling/GetSchedulingList');
@@ -9,12 +9,12 @@ export const GetSchedulingList = async () => {
         }
         return response.data;
     } catch (error) {
-        console.error('获取会议室列表失败：', error);
+        console.error('获取排班列表失败：', error);
         return null;
     }
 }
 
-// 搜索会议室
+// 搜索排班
 export const SearchSchedulingList = async (params) => {
     try {
         const response = await instance.post('Scheduling/SearchSchedulingList', params);
@@ -23,12 +23,12 @@ export const SearchSchedulingList = async (params) => {
         }
         return response.data;
     } catch (error) {
-        console.error('搜索会议室失败：', error);
+        console.error('搜索排班失败：', error);
         return null;
     }
 }
 
-// 查询会议室
+// 查询排班
 export const QuerySchedulingList = async (params) => {
     try {
         const response = await instance.post('Scheduling/QuerySchedulingList', params);
@@ -37,7 +37,35 @@ export const QuerySchedulingList = async (params) => {
         }
         return response.data;
     } catch (error) {
-        console.error('搜索会议室失败：', error);
+        console.error('搜索排班失败：', error);
+        return null;
+    }
+}
+
+// 添加排班
+export const AddScheduling = async (params) => {
+    try {
+        const response = await instance.post('Scheduling/AddScheduling', params);
+        if (!response?.data || response.data.code !== 1) {
+            return null;
+        }
+        return response.data;
+    } catch (error) {
+        console.error('添加排班失败：', error);
+        return null;
+    }
+}
+
+// 变更排班状态
+export const SetSchedulingStatus = async (params) => {
+    try {
+        const response = await instance.post('Scheduling/SetSchedulingStatus', params);
+        if (!response?.data || response.data.code !== 1) {
+            return null;
+        }
+        return response.data;
+    } catch (error) {
+        console.error('添加排班失败：', error);
         return null;
     }
 }

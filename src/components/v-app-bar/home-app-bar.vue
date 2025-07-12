@@ -17,7 +17,7 @@ const links = [
 
       <v-spacer></v-spacer>
 
-      <v-btn v-for="link in links" :key="link" :text="link" variant="text"></v-btn>
+<!--      <v-btn v-for="link in links" :key="link" :text="link" variant="text"></v-btn>-->
     </v-container>
   </v-app-bar>
 </template>
