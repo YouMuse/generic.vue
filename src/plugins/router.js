@@ -24,6 +24,20 @@ export function installRouter(app) {
     ]
 
     const routeArray = [
+        // {
+        //     path: "/",
+        //     component: () => import('@/layouts/constrained.vue'),
+        //     meta: {},
+        //     children: [
+        //         {
+        //             path: "/",
+        //             component: () => import('@/views/form/appointment.vue'),
+        //             meta: {
+        //                 title: '预约会议'
+        //             }
+        //         }
+        //     ]
+        // },
         {
             path: "/",
             component: () => import('@/layouts/constrained.vue'),
