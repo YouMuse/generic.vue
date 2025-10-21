@@ -331,6 +331,8 @@ defineExpose({search})
 
 <template>
   <v-card title="可用会议室" variant="elevated" hover>
+    <v-divider></v-divider>
+
     <v-card-text>
       <v-row>
         <v-col cols="6" v-for="item in rows" :key="item.id">

@@ -42,6 +42,8 @@ onMounted(() => {
 <template>
   <v-form v-on:submit="onSubmit">
     <v-card title="搜索" prepend-icon="mdi-filter" variant="elevated" hover>
+      <v-divider></v-divider>
+
       <v-card-text>
         <v-row dense>
           <v-col cols="4">
@@ -69,8 +71,10 @@ onMounted(() => {
 
       </v-card-text>
 
+      <v-divider></v-divider>
+
       <v-card-actions>
-        <v-btn color="primary" prepend-icon="mdi-magnify" text="查找会议室" class="ms-2" variant="flat" type="submit"/>
+        <v-btn color="primary" prepend-icon="mdi-magnify" text="查找会议室" class="ms-2" variant="elevated" type="submit"/>
       </v-card-actions>
     </v-card>
   </v-form>

@@ -138,7 +138,7 @@ const items2 = [
           </v-row>
         </v-col>
         <v-col cols="4" fill-height>
-          <v-sheet>
+          <v-sheet class="pa-4" rounded>
             <div class="font-weight-bold">会议室日程</div>
 
             <v-timeline align="start" density="compact">
