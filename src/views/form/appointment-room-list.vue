@@ -42,11 +42,241 @@ async function search(formData: SearchFormData) {
     location: formData.location,
   }
 
-  SearchSchedulingList(params).then(response => {
-    rows.value = response.data
-  }).catch(error => {
-    console.error('获取数据失败:', error);
-  })
+  // SearchSchedulingList(params).then(response => {
+  //   rows.value = response.data
+  // }).catch(error => {
+  //   console.error('获取数据失败:', error);
+  // })
+  rows.value = [
+    {
+      "id": 1,
+      "name": "创新会议室A",
+      "location": {
+        "id": 51,
+        "title": "A栋3层东区",
+        "value": "A3E",
+        "sortNo": null,
+        "description": null,
+        "remake": null
+      },
+      "capacity": 20,
+      "description": "配备投影仪和视频会议系统",
+      "facility": [
+        {
+          "id": 101,
+          "title": "投影仪",
+          "value": "PROJECTOR",
+          "sortNo": null,
+          "description": null,
+          "remake": null
+        },
+        {
+          "id": 103,
+          "title": "音响系统",
+          "value": "AUDIO",
+          "sortNo": null,
+          "description": null,
+          "remake": null
+        }
+      ],
+      "date": "2025-07-07T00:00:00",
+      "time": {
+        "startTime": "09:00:00",
+        "endTime": "10:30:00"
+      },
+      "photo": []
+    },
+    {
+      "id": 1,
+      "name": "创新会议室A",
+      "location": {
+        "id": 51,
+        "title": "A栋3层东区",
+        "value": "A3E",
+        "sortNo": null,
+        "description": null,
+        "remake": null
+      },
+      "capacity": 20,
+      "description": "配备投影仪和视频会议系统",
+      "facility": [
+        {
+          "id": 101,
+          "title": "投影仪",
+          "value": "PROJECTOR",
+          "sortNo": null,
+          "description": null,
+          "remake": null
+        },
+        {
+          "id": 103,
+          "title": "音响系统",
+          "value": "AUDIO",
+          "sortNo": null,
+          "description": null,
+          "remake": null
+        }
+      ],
+      "date": "2025-07-07T00:00:00",
+      "time": {
+        "startTime": "09:00:00",
+        "endTime": "10:30:00"
+      },
+      "photo": []
+    },
+    {
+      "id": 1,
+      "name": "创新会议室A",
+      "location": {
+        "id": 51,
+        "title": "A栋3层东区",
+        "value": "A3E",
+        "sortNo": null,
+        "description": null,
+        "remake": null
+      },
+      "capacity": 20,
+      "description": "配备投影仪和视频会议系统",
+      "facility": [
+        {
+          "id": 101,
+          "title": "投影仪",
+          "value": "PROJECTOR",
+          "sortNo": null,
+          "description": null,
+          "remake": null
+        },
+        {
+          "id": 103,
+          "title": "音响系统",
+          "value": "AUDIO",
+          "sortNo": null,
+          "description": null,
+          "remake": null
+        }
+      ],
+      "date": "2025-07-07T00:00:00",
+      "time": {
+        "startTime": "09:00:00",
+        "endTime": "10:30:00"
+      },
+      "photo": []
+    },
+    {
+      "id": 1,
+      "name": "创新会议室A",
+      "location": {
+        "id": 51,
+        "title": "A栋3层东区",
+        "value": "A3E",
+        "sortNo": null,
+        "description": null,
+        "remake": null
+      },
+      "capacity": 20,
+      "description": "配备投影仪和视频会议系统",
+      "facility": [
+        {
+          "id": 101,
+          "title": "投影仪",
+          "value": "PROJECTOR",
+          "sortNo": null,
+          "description": null,
+          "remake": null
+        },
+        {
+          "id": 103,
+          "title": "音响系统",
+          "value": "AUDIO",
+          "sortNo": null,
+          "description": null,
+          "remake": null
+        }
+      ],
+      "date": "2025-07-07T00:00:00",
+      "time": {
+        "startTime": "09:00:00",
+        "endTime": "10:30:00"
+      },
+      "photo": []
+    },
+    {
+      "id": 1,
+      "name": "创新会议室A",
+      "location": {
+        "id": 51,
+        "title": "A栋3层东区",
+        "value": "A3E",
+        "sortNo": null,
+        "description": null,
+        "remake": null
+      },
+      "capacity": 20,
+      "description": "配备投影仪和视频会议系统",
+      "facility": [
+        {
+          "id": 101,
+          "title": "投影仪",
+          "value": "PROJECTOR",
+          "sortNo": null,
+          "description": null,
+          "remake": null
+        },
+        {
+          "id": 103,
+          "title": "音响系统",
+          "value": "AUDIO",
+          "sortNo": null,
+          "description": null,
+          "remake": null
+        }
+      ],
+      "date": "2025-07-07T00:00:00",
+      "time": {
+        "startTime": "09:00:00",
+        "endTime": "10:30:00"
+      },
+      "photo": []
+    },
+    {
+      "id": 1,
+      "name": "创新会议室A",
+      "location": {
+        "id": 51,
+        "title": "A栋3层东区",
+        "value": "A3E",
+        "sortNo": null,
+        "description": null,
+        "remake": null
+      },
+      "capacity": 20,
+      "description": "配备投影仪和视频会议系统",
+      "facility": [
+        {
+          "id": 101,
+          "title": "投影仪",
+          "value": "PROJECTOR",
+          "sortNo": null,
+          "description": null,
+          "remake": null
+        },
+        {
+          "id": 103,
+          "title": "音响系统",
+          "value": "AUDIO",
+          "sortNo": null,
+          "description": null,
+          "remake": null
+        }
+      ],
+      "date": "2025-07-07T00:00:00",
+      "time": {
+        "startTime": "09:00:00",
+        "endTime": "10:30:00"
+      },
+      "photo": []
+    }
+  ]
 }
 
 // function more() {
@@ -100,10 +330,10 @@ defineExpose({search})
 </script>
 
 <template>
-  <v-card title="可用会议室">
+  <v-card title="可用会议室" variant="elevated" hover>
     <v-card-text>
       <v-row>
-        <v-col cols="12" v-for="item in rows" :key="item.id">
+        <v-col cols="6" v-for="item in rows" :key="item.id">
           <v-card hover>
             <div class="d-flex justify-start">
               <v-avatar class="ma-3" rounded="0" size="250">

@@ -33,39 +33,96 @@ const items = [
   },
 ]
 
+const items2 = [
+  {
+    id: 1,
+    color: 'info',
+    icon: 'mdi-information',
+    title: 'Lorem ipsum dolor sit amet, no nam oblique veritus. Commune scaevola imperdiet nec ut, sed euismod convenire principes at. Est et nobis iisque percipit, an vim zril disputando voluptatibus, vix an salutandi sententiae.',
+  },
+  {
+    id: 2,
+    color: 'green',
+    icon: 'mdi-alert-circle',
+    title: 'Lorem ipsum dolor sit amet, no nam oblique veritus. Commune scaevola imperdiet nec ut, sed euismod convenire principes at. Est et nobis iisque percipit, an vim zril disputando voluptatibus, vix an salutandi sententiae.',
+  },
+  {
+    id: 2,
+    color: 'green',
+    icon: 'mdi-alert-circle',
+    title: 'Lorem ipsum dolor sit amet, no nam oblique veritus. Commune scaevola imperdiet nec ut, sed euismod convenire principes at. Est et nobis iisque percipit, an vim zril disputando voluptatibus, vix an salutandi sententiae.',
+  },
+  {
+    id: 2,
+    color: 'green',
+    icon: 'mdi-alert-circle',
+    title: 'Lorem ipsum dolor sit amet, no nam oblique veritus. Commune scaevola imperdiet nec ut, sed euismod convenire principes at. Est et nobis iisque percipit, an vim zril disputando voluptatibus, vix an salutandi sententiae.',
+  },
+  {
+    id: 2,
+    color: 'green',
+    icon: 'mdi-alert-circle',
+    title: 'Lorem ipsum dolor sit amet, no nam oblique veritus. Commune scaevola imperdiet nec ut, sed euismod convenire principes at. Est et nobis iisque percipit, an vim zril disputando voluptatibus, vix an salutandi sententiae.',
+  },
+  {
+    id: 2,
+    color: 'green',
+    icon: 'mdi-alert-circle',
+    title: 'Lorem ipsum dolor sit amet, no nam oblique veritus. Commune scaevola imperdiet nec ut, sed euismod convenire principes at. Est et nobis iisque percipit, an vim zril disputando voluptatibus, vix an salutandi sententiae.',
+  },
+  {
+    id: 2,
+    color: 'green',
+    icon: 'mdi-alert-circle',
+    title: 'Lorem ipsum dolor sit amet, no nam oblique veritus. Commune scaevola imperdiet nec ut, sed euismod convenire principes at. Est et nobis iisque percipit, an vim zril disputando voluptatibus, vix an salutandi sententiae.',
+  },
+  {
+    id: 2,
+    color: 'green',
+    icon: 'mdi-alert-circle',
+    title: 'Lorem ipsum dolor sit amet, no nam oblique veritus. Commune scaevola imperdiet nec ut, sed euismod convenire principes at. Est et nobis iisque percipit, an vim zril disputando voluptatibus, vix an salutandi sententiae.',
+  },
+  {
+    id: 2,
+    color: 'green',
+    icon: 'mdi-alert-circle',
+    title: 'Lorem ipsum dolor sit amet, no nam oblique veritus. Commune scaevola imperdiet nec ut, sed euismod convenire principes at. Est et nobis iisque percipit, an vim zril disputando voluptatibus, vix an salutandi sententiae.',
+  }
+]
+
 </script>
 
 <template>
   <v-main>
     <v-container fluid>
-      <v-carousel v-bind:show-arrows="false" progress="primary" height="300" crossfade cycle hide-delimiter-background>
-        <v-carousel-item cover>
-          <v-card color="indigo" height="300">
-            <v-card-title class="text-h5">
-              Supermodel
-            </v-card-title>
+      <!--      <v-carousel v-bind:show-arrows="false" progress="primary" height="300" crossfade cycle hide-delimiter-background>-->
+      <!--        <v-carousel-item cover>-->
+      <!--          <v-card color="indigo" height="300">-->
+      <!--            <v-card-title class="text-h5">-->
+      <!--              Supermodel-->
+      <!--            </v-card-title>-->
 
-            <v-card-text>
-              <div class="d-flex justify-space-between">
-                <div>
-                  "Turns out semicolon-less style is easier and safer in TS because most gotcha edge cases are type invalid as well."
-                </div>
+      <!--            <v-card-text>-->
+      <!--              <div class="d-flex justify-space-between">-->
+      <!--                <div>-->
+      <!--                  "Turns out semicolon-less style is easier and safer in TS because most gotcha edge cases are type invalid as well."-->
+      <!--                </div>-->
 
-                <v-avatar class="ma-3" rounded="0">
-                  <v-img src="https://cdn.vuetifyjs.com/images/cards/foster.jpg"></v-img>
-                </v-avatar>
-              </div>
-            </v-card-text>
+      <!--                <v-avatar class="ma-3" rounded="0">-->
+      <!--                  <v-img src="https://cdn.vuetifyjs.com/images/cards/foster.jpg"></v-img>-->
+      <!--                </v-avatar>-->
+      <!--              </div>-->
+      <!--            </v-card-text>-->
 
-            <v-divider></v-divider>
+      <!--            <v-divider></v-divider>-->
 
-            <v-card-actions>
-              <v-btn class="ms-2" size="small" text="START RADIO" variant="outlined"></v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-carousel-item>
-        <v-carousel-item v-for="(item,i) in items" :key="i" :src="item.src" cover></v-carousel-item>
-      </v-carousel>
+      <!--            <v-card-actions>-->
+      <!--              <v-btn class="ms-2" size="small" text="START RADIO" variant="outlined"></v-btn>-->
+      <!--            </v-card-actions>-->
+      <!--          </v-card>-->
+      <!--        </v-carousel-item>-->
+      <!--        <v-carousel-item v-for="(item,i) in items" :key="i" :src="item.src" cover></v-carousel-item>-->
+      <!--      </v-carousel>-->
 
       <v-row>
         <v-col cols="8">
@@ -79,14 +136,19 @@ const items = [
               <AppointmentRoomList ref="appointmentRoomListRef"/>
             </v-col>
           </v-row>
-          <v-row>
-            <v-col v-for="n in 24" :key="n" cols="4">
-              <v-card height="200"></v-card>
-            </v-col>
-          </v-row>
         </v-col>
-        <v-col cols="4">
-          <SearchRoom v-on:search="handleSearch"/>
+        <v-col cols="4" fill-height>
+          <v-sheet>
+            <div class="font-weight-bold">会议室日程</div>
+
+            <v-timeline align="start" density="compact">
+              <v-timeline-item v-for="item in items2" :key="item.id" :dot-color="item.color" size="small">
+                <v-alert :color="item.color" :icon="item.icon">
+                  {{ item.title }}
+                </v-alert>
+              </v-timeline-item>
+            </v-timeline>
+          </v-sheet>
         </v-col>
       </v-row>
 
