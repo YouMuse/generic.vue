@@ -125,7 +125,7 @@ const items2 = [
       <!--      </v-carousel>-->
 
       <v-row>
-        <v-col cols="8">
+        <v-col cols="12" md="8">
           <v-row>
             <v-col cols="12">
               <SearchRoom v-on:search="handleSearch"/>
@@ -137,7 +137,7 @@ const items2 = [
             </v-col>
           </v-row>
         </v-col>
-        <v-col cols="4" fill-height>
+        <v-col cols="12" md="4" fill-height>
           <v-sheet class="pa-4" rounded>
             <div class="font-weight-bold">会议室日程</div>
 

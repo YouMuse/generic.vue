@@ -53,6 +53,20 @@ export function installRouter(app) {
             ]
         },
         {
+            path: "/user",
+            component: () => import('@/layouts/constrained.vue'),
+            meta: {},
+            children: [
+                {
+                    path: "/user",
+                    component: () => import('@/views/form/personal-center.vue'),
+                    meta: {
+                        title: '我的预约'
+                    }
+                }
+            ]
+        },
+        {
             path: "/room",
             component: () => import('@/layouts/inbox.vue'),
             meta: {

@@ -15,7 +15,7 @@ const userInfo = {
   avatar: 'https://randomuser.me/api/portraits/women/85.jpg'
 }
 
-const menu = [
+const links = [
   {id: 3, text: '会议室管理', icon: 'mdi-home-circle', link: '/room'},
   {id: 5, text: '排班管理', icon: 'mdi-invoice-clock', link: '/scheduling'},
   {id: 5, text: '预约管理', icon: 'mdi-check-circle', link: '/reserve'},
@@ -37,7 +37,7 @@ function signOut() {
     <v-divider></v-divider>
 
     <v-list density="compact" nav>
-      <v-list-item v-for="item in menu" :key="item.id" :value="item" v-bind:prepend-icon="item.icon" v-bind:title="item.text" :to="item.link" color="primary"></v-list-item>
+      <v-list-item v-for="item in links" :key="item.id" :value="item" v-bind:prepend-icon="item.icon" v-bind:title="item.text" :to="item.link" color="primary"></v-list-item>
     </v-list>
 
     <template v-slot:append>

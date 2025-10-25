@@ -46,25 +46,25 @@ onMounted(() => {
 
       <v-card-text>
         <v-row dense>
-          <v-col cols="4">
+          <v-col cols="12" md="4">
             <v-text-field v-model="record.date" label="日期" type="date" variant="outlined"></v-text-field>
           </v-col>
-          <v-col cols="4">
+          <v-col cols="6" md="4">
             <v-text-field v-model="record.startTime" label="开始时间" type="time" variant="outlined"></v-text-field>
           </v-col>
-          <v-col cols="4">
+          <v-col cols="6" md="4">
             <v-text-field v-model="record.endTime" label="结束时间" type="time" variant="outlined"></v-text-field>
           </v-col>
         </v-row>
 
         <v-row dense>
-          <v-col cols="4">
+          <v-col cols="12" md="4">
             <v-number-input v-model="record.capacity" label="容纳人数" control-variant="default" :min="2" variant="outlined" prepend-inner-icon="mdi-account-group"></v-number-input>
           </v-col>
-          <v-col cols="4">
+          <v-col cols="6" md="4">
             <v-combobox v-model="record.facility" :items="facility" item-title="title" item-value="id" label="设施要求" chips multiple prepend-inner-icon="mdi-human-male-board"></v-combobox>
           </v-col>
-          <v-col cols="4">
+          <v-col cols="6" md="4">
             <v-select v-model="record.location" :items="location" item-title="title" item-value="value" label="会议地点" variant="outlined" prepend-inner-icon="mdi-map-marker" return-object></v-select>
           </v-col>
         </v-row>
