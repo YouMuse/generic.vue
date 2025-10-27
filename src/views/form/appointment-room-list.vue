@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import {onMounted, ref, shallowRef} from 'vue'
 
+import teamImage from '@/assets/team.png'
+
 import {GetSchedulingList, SearchSchedulingList} from '@/services/schedulingService.js'
 import {Reserve} from '@/services/reserveService.js'
 import {DepartmentList} from '@/services/departmentService.js'
@@ -42,11 +44,48 @@ async function search(formData: SearchFormData) {
     location: formData.location,
   }
 
-  // SearchSchedulingList(params).then(response => {
+  SearchSchedulingList(params).then(response => {
+    rows.value = response.data
+  }).catch(error => {
+    console.error('获取数据失败:', error);
+  })
+}
+
+// function more() {
+//   console.log('more')
+// }
+
+function appointment() {
+  form.value.validate().then(function (results: any) {
+    if (!results.valid) return
+
+    Reserve(record.value).catch(error => {
+      console.error('预约失败:', error);
+    })
+
+    dialog.value = false
+
+    reset()
+  })
+}
+
+function submit(id: string) {
+  const found = rows.value.find(x => x.id === id)
+
+  record.value = {reserve: {department: null, date: found.date.split('T')[0], startTime: found.time.startTime, endTime: found.time.endTime, attendeesCount: 2}, scheduling: {Id: found.id}}
+
+  dialog.value = true
+}
+
+function reset() {
+  dialog.value = false
+
+  // GetSchedulingList().then(response => {
   //   rows.value = response.data
   // }).catch(error => {
   //   console.error('获取数据失败:', error);
   // })
+
   rows.value = [
     {
       "id": 1,
@@ -277,42 +316,6 @@ async function search(formData: SearchFormData) {
       "photo": []
     }
   ]
-}
-
-// function more() {
-//   console.log('more')
-// }
-
-function appointment() {
-  form.value.validate().then(function (results: any) {
-    if (!results.valid) return
-
-    Reserve(record.value).catch(error => {
-      console.error('预约失败:', error);
-    })
-
-    dialog.value = false
-
-    reset()
-  })
-}
-
-function submit(id: string) {
-  const found = rows.value.find(x => x.id === id)
-
-  record.value = {reserve: {department: null, date: found.date.split('T')[0], startTime: found.time.startTime, endTime: found.time.endTime, attendeesCount: 2}, scheduling: {Id: found.id}}
-
-  dialog.value = true
-}
-
-function reset() {
-  dialog.value = false
-
-  GetSchedulingList().then(response => {
-    rows.value = response.data
-  }).catch(error => {
-    console.error('获取数据失败:', error);
-  })
 
   DepartmentList().then(response => {
     department.value = response.data
@@ -335,12 +338,14 @@ defineExpose({search})
 
     <v-card-text>
       <v-row>
-        <v-col cols="6" v-for="item in rows" :key="item.id">
-          <v-card hover>
+        <v-col cols="12" sm="6" v-for="item in rows" :key="item.id">
+          <v-card variant="elevated" hover>
             <div class="d-flex justify-start">
-              <v-avatar class="ma-3" rounded="0" size="250">
-                <v-img src="https://cdn.vuetifyjs.com/images/cards/foster.jpg"></v-img>
-              </v-avatar>
+              <v-card variant="text">
+                <v-img v-bind:src="teamImage" width="250" aspect-ratio="1/1" class="align-start" cover>
+                  <v-card-title class="text-white text-right">{{ item.capacity }}</v-card-title>
+                </v-img>
+              </v-card>
 
               <v-card variant="text">
                 <v-card-item>
@@ -355,9 +360,6 @@ defineExpose({search})
                       </v-chip>
                       <v-chip color="teal" prepend-icon="mdi-map-marker">
                         {{ item.location.title }}
-                      </v-chip>
-                      <v-chip color="teal" prepend-icon="mdi-clock-time-seven-outline">
-                        {{ formatTime(item.time.startTime) }}-{{ formatTime(item.time.endTime) }}
                       </v-chip>
                     </div>
                   </v-card-subtitle>
@@ -378,7 +380,6 @@ defineExpose({search})
                   <v-btn class="text-none" color="primary" rounded="lg" text="立即预约" variant="flat" @click="submit(item.id)"/>
                 </v-card-actions>
               </v-card>
-
             </div>
           </v-card>
         </v-col>

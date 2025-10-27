@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import {ref} from 'vue'
 import {useRouter} from 'vue-router'
+
+import seaImage from '@/assets/sea.jpg'
+
 import {login} from '@/services/authorizationService'
 
 const record = ref({
@@ -22,13 +25,13 @@ function onSubmit() {
 </script>
 
 <template>
-  <v-img class="fill-height" src="/src/assets/sea.jpg" aspect-ratio="16/9" cover>
+  <v-img class="fill-height" v-bind:src="seaSrc" aspect-ratio="16/9" cover>
     <v-container>
       <v-row justify="center">
         <v-col cols="12" md="6">
           <v-card elevation="12">
             <v-form v-on:submit.prevent="onSubmit">
-              <v-img height="300px" src="/src/assets/sunshine.jpg" cover></v-img>
+              <v-img height="300px" v-bind:src="seaImage" cover></v-img>
               <v-card-item>
                 <v-card-title class="text-center">
                   <h2 class="text-h4 black--text font-weight-bold">
