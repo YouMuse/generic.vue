@@ -32,12 +32,28 @@ const items = [
                 <v-col cols="12" md="6" v-for="item in 17">
                   <v-card min-height="200px">
                     <v-card-item>
-                      <v-card-title>项目启动会议</v-card-title>
-                      <v-card-subtitle class="text-right">2023-09-01 10:00</v-card-subtitle>
+                      <v-card-title class="d-flex justify-space-between align-center">
+                        项目启动会议
+                        <v-spacer></v-spacer>
+                        <v-chip color="teal">
+                          待审核
+                        </v-chip>
+                      </v-card-title>
+
+                      <v-card-subtitle>
+                        预约时间：2023-01-01 12:00:00
+                      </v-card-subtitle>
                     </v-card-item>
 
                     <v-card-text>
-
+                      <v-row>
+                        <v-col cols="12" md="3">会议室：</v-col>
+                        <v-col cols="12" md="3">日期：</v-col>
+                        <v-col cols="12" md="3">时间：</v-col>
+                        <v-col cols="12" md="3">参会人数：</v-col>
+                        <v-col cols="12" md="3">位置：</v-col>
+                        <v-col cols="12" md="3">取消原因：</v-col>
+                      </v-row>
                     </v-card-text>
 
                     <v-card-actions>
